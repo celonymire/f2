@@ -1,43 +1,30 @@
-# Astro Starter Kit: Minimal
+# F2 Frontend
 
-```sh
-pnpm create astro@latest -- --template minimal
-```
+Astro app containing the pace calculator and race benchmark table.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Commands
 
-## 🚀 Project Structure
+All commands run from project root.
 
-Inside of your Astro project, you'll see the following folders and files:
+| Command | Action |
+| :-- | :-- |
+| `pnpm install` | Install dependencies |
+| `pnpm dev` | Start local server |
+| `pnpm build` | Build production output |
+| `pnpm preview` | Preview production build |
+| `pnpm astro check` | Run Astro + type checks |
+| `pnpm race-ranks:generate` | Generate `public/data/race-ranks.csv` from normalized source results |
+| `pnpm race-ranks:validate` | Validate schema and rank ordering in `public/data/race-ranks.csv` |
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Race Rank Data Pipeline
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+The benchmark CSV is generated from normalized input race-result records.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+1. Prepare `public/data/sources/normalized-results.csv`
+2. Run `pnpm race-ranks:generate`
+3. Run `pnpm race-ranks:validate`
 
-Any static assets, like images, can be placed in the `public/` directory.
+Reference docs:
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `docs/race-ranks-pipeline.md`
+- `public/data/sources/README.md`
