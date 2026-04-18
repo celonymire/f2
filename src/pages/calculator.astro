@@ -159,8 +159,7 @@ import Navbar from "../components/Navbar.astro";
           <label>
             Distance
             <select id="benchmark-distance" aria-label="Benchmark distance">
-              <option value="all" selected>All distances</option>
-              <option value="5k">5K</option>
+              <option value="5k" selected>5K</option>
               <option value="10k">10K</option>
               <option value="half-marathon">Half Marathon</option>
               <option value="marathon">Marathon</option>
@@ -409,13 +408,6 @@ import Navbar from "../components/Navbar.astro";
         marathon: "Marathon",
       };
 
-      const benchmarkDistanceOrder: BenchmarkDistanceKey[] = [
-        "5k",
-        "10k",
-        "half-marathon",
-        "marathon",
-      ];
-
       const benchmarkRankOrder: RankLevel[] = [
         "beginner",
         "novice",
@@ -563,7 +555,7 @@ import Navbar from "../components/Navbar.astro";
 
       const loadRaceRankData = async () => {
         try {
-          const response = await fetch("/data/race-ranks.csv");
+          const response = await fetch("/f2/data/race-ranks.csv");
 
           if (!response.ok) {
             throw new Error(`Failed to load CSV (${response.status})`);
@@ -678,20 +670,17 @@ import Navbar from "../components/Navbar.astro";
           const selectedDistance = distanceSelect.value;
           const selectedRank = rankSelect.value;
           const selectedGender = genderFilter.value;
-          const showDistanceColumn = selectedDistance === "all";
           const showRankColumn = selectedRank === "all";
           const singleGender =
             selectedGender === "male" || selectedGender === "female";
           const benchmarkColumns = singleGender
             ? [
-                ...(showDistanceColumn ? ["Distance"] : []),
                 "Age Group",
                 ...(showRankColumn
                   ? benchmarkRankOrder.map((rankLevel) => formatRankLabel(rankLevel))
                   : [selectedGender === "male" ? "Men" : "Women"]),
               ]
             : [
-                ...(showDistanceColumn ? ["Distance"] : []),
                 ...(showRankColumn ? ["Rank"] : []),
                 "Age Group",
                 "Men",
@@ -713,10 +702,7 @@ import Navbar from "../components/Navbar.astro";
             return;
           }
 
-          const distanceKeys: BenchmarkDistanceKey[] =
-            selectedDistance === "all"
-              ? benchmarkDistanceOrder
-              : [selectedDistance as BenchmarkDistanceKey];
+          const distanceKeys: BenchmarkDistanceKey[] = [selectedDistance as BenchmarkDistanceKey];
           const rankLevels: RankLevel[] =
             selectedRank === "all"
               ? benchmarkRankOrder
@@ -731,10 +717,7 @@ import Navbar from "../components/Navbar.astro";
             return;
           }
 
-          const distanceText =
-            selectedDistance === "all"
-              ? "all distances"
-              : benchmarkDistanceLabels[selectedDistance as BenchmarkDistanceKey];
+          const distanceText = benchmarkDistanceLabels[selectedDistance as BenchmarkDistanceKey];
           const rankText =
             selectedRank === "all"
               ? "all ranks"
@@ -767,15 +750,11 @@ import Navbar from "../components/Navbar.astro";
                         return "";
                       }
 
-                      const distanceCell = showDistanceColumn
-                        ? `<td>${benchmarkDistanceLabels[distanceKey]}</td>`
-                        : "";
                       const rankCellsMarkup = rankCells
                         .map((value) => `<td>${value}</td>`)
                         .join("");
 
                       return `<tr>
-                        ${distanceCell}
                         <th scope="row">${ageGroup}</th>
                         ${rankCellsMarkup}
                       </tr>`;
@@ -799,9 +778,6 @@ import Navbar from "../components/Navbar.astro";
                           return "";
                         }
 
-                        const distanceCell = showDistanceColumn
-                          ? `<td>${benchmarkDistanceLabels[distanceKey]}</td>`
-                          : "";
                         const rankCell = showRankColumn
                           ? `<td>${formatRankLabel(rankLevel)}</td>`
                           : "";
@@ -814,7 +790,6 @@ import Navbar from "../components/Navbar.astro";
                           }
 
                           return `<tr>
-                            ${distanceCell}
                             ${rankCell}
                             <th scope="row">${ageGroup}</th>
                             <td>${selectedValue}</td>
@@ -822,7 +797,6 @@ import Navbar from "../components/Navbar.astro";
                         }
 
                         return `<tr>
-                          ${distanceCell}
                           ${rankCell}
                           <th scope="row">${ageGroup}</th>
                           <td>${male ?? "N/A"}</td>
