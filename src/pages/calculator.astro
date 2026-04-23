@@ -202,14 +202,14 @@ import Navbar from "../components/Navbar.astro";
         <div id="benchmark-chart-wrap" class="benchmark-chart-wrap">
           <p id="benchmark-chart-summary" class="benchmark-chart-summary"></p>
           <div class="benchmark-chart-scroller">
-            <svg
+            <canvas
               id="benchmark-chart"
               class="benchmark-chart"
-              viewBox="0 0 720 360"
+              width="720"
+              height="360"
               role="img"
-              aria-label="Benchmark pace chart by age"></svg>
+              aria-label="Benchmark pace chart by age"></canvas>
           </div>
-          <ul id="benchmark-chart-legend" class="benchmark-chart-legend"></ul>
         </div>
 
         <div id="benchmark-table-wrap" class="benchmark-table-wrap" hidden>
@@ -425,47 +425,6 @@ import Navbar from "../components/Navbar.astro";
         width: 100%;
         height: auto;
         background: #fff;
-      }
-
-      .benchmark-chart-legend {
-        display: flex;
-        gap: 0.35rem 0.85rem;
-        flex-wrap: wrap;
-        align-items: center;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
-
-      .benchmark-chart-legend li {
-        display: inline-flex;
-        gap: 0.4rem;
-        align-items: center;
-        justify-content: flex-start;
-        width: max-content;
-        min-height: 0;
-        font-size: 0.9rem;
-        padding: 0;
-        border: 0;
-        border-radius: 0;
-        background: transparent;
-        color: #111827;
-        text-align: center;
-        white-space: nowrap;
-      }
-
-      .benchmark-legend-key {
-        width: 0.95em;
-        min-width: 0.95em;
-        height: 0.95em;
-        display: block;
-        flex: 0 0 auto;
-        overflow: visible;
-      }
-
-      .benchmark-legend-label {
-        color: inherit;
-        min-width: 0;
       }
 
       .benchmark-table-wrap {

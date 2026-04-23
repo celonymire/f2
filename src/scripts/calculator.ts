@@ -1,3 +1,7 @@
+import { Chart, registerables, type ChartDataset } from "chart.js";
+
+Chart.register(...registerables);
+
       type RankThresholds = {
         beginner: number;
         novice: number;
@@ -384,9 +388,6 @@
         const benchmarkChartSummaryElement = document.getElementById(
           "benchmark-chart-summary",
         );
-        const benchmarkChartLegendElement = document.getElementById(
-          "benchmark-chart-legend",
-        );
         const benchmarkTableWrapElement = document.getElementById(
           "benchmark-table-wrap",
         );
@@ -403,9 +404,8 @@
           !(rankSelectElement instanceof HTMLSelectElement) ||
           !(genderFilterElement instanceof HTMLSelectElement) ||
           !(benchmarkChartWrapElement instanceof HTMLElement) ||
-          !(benchmarkChartElement instanceof SVGSVGElement) ||
+          !(benchmarkChartElement instanceof HTMLCanvasElement) ||
           !(benchmarkChartSummaryElement instanceof HTMLElement) ||
-          !(benchmarkChartLegendElement instanceof HTMLUListElement) ||
           !(benchmarkTableWrapElement instanceof HTMLElement) ||
           !(benchmarkBodyElement instanceof HTMLTableSectionElement) ||
           !(benchmarkCaptionElement instanceof HTMLTableCaptionElement) ||
@@ -422,22 +422,29 @@
         const benchmarkChartWrap = benchmarkChartWrapElement;
         const benchmarkChart = benchmarkChartElement;
         const benchmarkChartSummary = benchmarkChartSummaryElement;
-        const benchmarkChartLegend = benchmarkChartLegendElement;
         const benchmarkTableWrap = benchmarkTableWrapElement;
         const benchmarkBody = benchmarkBodyElement;
         const benchmarkCaption = benchmarkCaptionElement;
         const benchmarkHeadRow = benchmarkHeadRowElement;
 
-        type ChartPoint = {
-          ageGroup: string;
-          seconds: number;
-        };
-
         type ChartSeries = {
           label: string;
           color: string;
-          points: ChartPoint[];
+          valuesByAge: Map<string, number>;
+          criticalByAge: Map<string, string>;
         };
+
+        type BenchmarkDataset = ChartDataset<"line", (number | null)[]> & {
+          benchmarkMeta: {
+            criticalByIndex: Map<number, string>;
+          };
+        };
+
+        let benchmarkChartInstance: Chart<
+          "line",
+          (number | null)[],
+          string
+        > | null = null;
 
         const chartPalette = [
           "#2563eb",
@@ -452,12 +459,13 @@
           "#0f766e",
         ];
 
-        const svgNamespace = "http://www.w3.org/2000/svg";
-
         const renderChartMessage = (message: string) => {
           benchmarkChartSummary.textContent = message;
-          benchmarkChart.replaceChildren();
-          benchmarkChartLegend.innerHTML = "";
+
+          if (benchmarkChartInstance) {
+            benchmarkChartInstance.destroy();
+            benchmarkChartInstance = null;
+          }
         };
 
         const updateBenchmarkView = () => {
@@ -504,7 +512,45 @@
                       seconds,
                     };
                   })
-                  .filter((point): point is ChartPoint => point !== null);
+                  .filter(
+                    (
+                      point,
+                    ): point is { ageGroup: string; seconds: number } =>
+                      point !== null,
+                  );
+
+                if (points.length === 0) {
+                  return null;
+                }
+
+                let fastestPoint = points[0];
+                let slowestPoint = points[0];
+
+                for (const point of points) {
+                  if (point.seconds < fastestPoint.seconds) {
+                    fastestPoint = point;
+                  }
+
+                  if (point.seconds > slowestPoint.seconds) {
+                    slowestPoint = point;
+                  }
+                }
+
+                const valuesByAge = new Map(
+                  points.map((point) => [point.ageGroup, point.seconds]),
+                );
+                const criticalByAge = new Map<string, string>();
+
+                criticalByAge.set(fastestPoint.ageGroup, "Critical: fastest");
+
+                if (slowestPoint.ageGroup === fastestPoint.ageGroup) {
+                  criticalByAge.set(
+                    slowestPoint.ageGroup,
+                    "Critical: fastest and slowest",
+                  );
+                } else {
+                  criticalByAge.set(slowestPoint.ageGroup, "Critical: slowest");
+                }
 
                 const label =
                   selectedRank === "all" && selectedGender === "all"
@@ -522,11 +568,12 @@
                 return {
                   label,
                   color: chartPalette[colorIndex % chartPalette.length],
-                  points,
+                  valuesByAge,
+                  criticalByAge,
                 };
               }),
             )
-            .filter((series) => series.points.length > 0);
+            .filter((series): series is ChartSeries => series !== null);
         };
 
         const renderBenchmarkChart = (
@@ -550,33 +597,9 @@
             return;
           }
 
-          const allSeconds = series.flatMap((entry) =>
-            entry.points.map((point) => point.seconds),
-          );
-
-          if (allSeconds.length === 0) {
-            renderChartMessage("No chart data found for this selection.");
-            return;
-          }
-
-          const minSeconds = Math.min(...allSeconds);
-          const maxSeconds = Math.max(...allSeconds);
-          const spread = Math.max(60, maxSeconds - minSeconds);
-          const domainMin = Math.max(0, minSeconds - spread * 0.1);
-          const domainMax = maxSeconds + spread * 0.1;
-          const width = 720;
-          const height = 360;
-          const padding = {
-            top: 20,
-            right: 22,
-            bottom: 42,
-            left: 62,
-          };
-          const plotWidth = width - padding.left - padding.right;
-          const plotHeight = height - padding.top - padding.bottom;
           const visibleAges = sortedAgeGroups.filter((ageGroup) =>
             series.some((entry) =>
-              entry.points.some((point) => point.ageGroup === ageGroup),
+              entry.valuesByAge.has(ageGroup),
             ),
           );
 
@@ -585,150 +608,112 @@
             return;
           }
 
-          const ageIndexMap = new Map(
-            visibleAges.map((ageGroup, index) => [ageGroup, index]),
-          );
-
-          const xForAge = (ageGroup: string) => {
-            const ageIndex = ageIndexMap.get(ageGroup) ?? 0;
-
-            if (visibleAges.length === 1) {
-              return padding.left + plotWidth / 2;
-            }
-
-            return (
-              padding.left + (ageIndex / (visibleAges.length - 1)) * plotWidth
-            );
-          };
-
-          const yForSeconds = (seconds: number) => {
-            const ratio = (seconds - domainMin) / (domainMax - domainMin);
-            return padding.top + plotHeight - ratio * plotHeight;
-          };
-
-          benchmarkChart.replaceChildren();
-
-          const background = document.createElementNS(svgNamespace, "rect");
-          background.setAttribute("x", String(padding.left));
-          background.setAttribute("y", String(padding.top));
-          background.setAttribute("width", String(plotWidth));
-          background.setAttribute("height", String(plotHeight));
-          background.setAttribute("fill", "#ffffff");
-          background.setAttribute("stroke", "#e5e7eb");
-          benchmarkChart.append(background);
-
-          const tickCount = 5;
-
-          for (let index = 0; index < tickCount; index += 1) {
-            const ratio = index / (tickCount - 1);
-            const secondsValue = domainMax - (domainMax - domainMin) * ratio;
-            const y = yForSeconds(secondsValue);
-            const gridLine = document.createElementNS(svgNamespace, "line");
-            gridLine.setAttribute("x1", String(padding.left));
-            gridLine.setAttribute("x2", String(width - padding.right));
-            gridLine.setAttribute("y1", String(y));
-            gridLine.setAttribute("y2", String(y));
-            gridLine.setAttribute("stroke", "#e5e7eb");
-            gridLine.setAttribute("stroke-width", "1");
-            benchmarkChart.append(gridLine);
-
-            const tickLabel = document.createElementNS(svgNamespace, "text");
-            tickLabel.setAttribute("x", String(padding.left - 8));
-            tickLabel.setAttribute("y", String(y + 4));
-            tickLabel.setAttribute("text-anchor", "end");
-            tickLabel.setAttribute("font-size", "12");
-            tickLabel.setAttribute("fill", "#374151");
-            tickLabel.textContent = formatTime(Math.round(secondsValue));
-            benchmarkChart.append(tickLabel);
+          if (benchmarkChartInstance) {
+            benchmarkChartInstance.destroy();
           }
 
-          const axisX = document.createElementNS(svgNamespace, "line");
-          axisX.setAttribute("x1", String(padding.left));
-          axisX.setAttribute("x2", String(width - padding.right));
-          axisX.setAttribute("y1", String(height - padding.bottom));
-          axisX.setAttribute("y2", String(height - padding.bottom));
-          axisX.setAttribute("stroke", "#4b5563");
-          axisX.setAttribute("stroke-width", "1");
-          benchmarkChart.append(axisX);
+          const datasets = series.map((entry): BenchmarkDataset => {
+            const data = visibleAges.map(
+              (ageGroup) => entry.valuesByAge.get(ageGroup) ?? null,
+            );
+            const criticalByIndex = new Map<number, string>();
 
-          const axisY = document.createElementNS(svgNamespace, "line");
-          axisY.setAttribute("x1", String(padding.left));
-          axisY.setAttribute("x2", String(padding.left));
-          axisY.setAttribute("y1", String(padding.top));
-          axisY.setAttribute("y2", String(height - padding.bottom));
-          axisY.setAttribute("stroke", "#4b5563");
-          axisY.setAttribute("stroke-width", "1");
-          benchmarkChart.append(axisY);
+            visibleAges.forEach((ageGroup, index) => {
+              const criticalLabel = entry.criticalByAge.get(ageGroup);
 
-          const xLabelStep = visibleAges.length > 10 ? 2 : 1;
-
-          visibleAges.forEach((ageGroup, index) => {
-            if (index % xLabelStep !== 0 && index !== visibleAges.length - 1) {
-              return;
-            }
-
-            const x = xForAge(ageGroup);
-            const tick = document.createElementNS(svgNamespace, "line");
-            tick.setAttribute("x1", String(x));
-            tick.setAttribute("x2", String(x));
-            tick.setAttribute("y1", String(height - padding.bottom));
-            tick.setAttribute("y2", String(height - padding.bottom + 5));
-            tick.setAttribute("stroke", "#4b5563");
-            tick.setAttribute("stroke-width", "1");
-            benchmarkChart.append(tick);
-
-            const label = document.createElementNS(svgNamespace, "text");
-            label.setAttribute("x", String(x));
-            label.setAttribute("y", String(height - padding.bottom + 18));
-            label.setAttribute("text-anchor", "middle");
-            label.setAttribute("font-size", "12");
-            label.setAttribute("fill", "#374151");
-            label.textContent = ageGroup;
-            benchmarkChart.append(label);
-          });
-
-          series.forEach((entry) => {
-            const coordinates = entry.points.map((point) => {
-              const x = xForAge(point.ageGroup);
-              const y = yForSeconds(point.seconds);
-              return `${x},${y}`;
+              if (criticalLabel) {
+                criticalByIndex.set(index, criticalLabel);
+              }
             });
 
-            if (coordinates.length === 0) {
-              return;
-            }
-
-            const linePath = document.createElementNS(svgNamespace, "polyline");
-            linePath.setAttribute("points", coordinates.join(" "));
-            linePath.setAttribute("fill", "none");
-            linePath.setAttribute("stroke", entry.color);
-            linePath.setAttribute("stroke-width", "2.5");
-            linePath.setAttribute("stroke-linecap", "round");
-            linePath.setAttribute("stroke-linejoin", "round");
-            benchmarkChart.append(linePath);
-
-            entry.points.forEach((point) => {
-              const circle = document.createElementNS(svgNamespace, "circle");
-              circle.setAttribute("cx", String(xForAge(point.ageGroup)));
-              circle.setAttribute("cy", String(yForSeconds(point.seconds)));
-              circle.setAttribute("r", "3");
-              circle.setAttribute("fill", entry.color);
-              benchmarkChart.append(circle);
-            });
+            return {
+              label: entry.label,
+              data,
+              borderColor: entry.color,
+              backgroundColor: entry.color,
+              tension: 0.25,
+              spanGaps: true,
+              pointHoverRadius: 6,
+              pointRadius: (context) => {
+                const dataset = context.dataset as BenchmarkDataset;
+                return dataset.benchmarkMeta.criticalByIndex.has(context.dataIndex)
+                  ? 5
+                  : 3;
+              },
+              benchmarkMeta: {
+                criticalByIndex,
+              },
+            };
           });
 
-          benchmarkChartSummary.textContent = `${captionText}. Lower times are faster.`;
-          benchmarkChartLegend.innerHTML = series
-            .map(
-              (entry) => `<li>
-                <svg class="benchmark-legend-key" aria-hidden="true" viewBox="0 0 28 12">
-                  <line x1="1" y1="6" x2="27" y2="6" stroke="${entry.color}" stroke-width="3" stroke-linecap="round"></line>
-                  <circle cx="14" cy="6" r="4" fill="${entry.color}" stroke="#ffffff" stroke-width="2"></circle>
-                </svg>
-                <span class="benchmark-legend-label">${entry.label}</span>
-              </li>`,
-            )
-            .join("");
+          benchmarkChartInstance = new Chart<"line", (number | null)[], string>(
+            benchmarkChart,
+            {
+            type: "line",
+            data: {
+              labels: visibleAges,
+              datasets,
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: true,
+              aspectRatio: 2,
+              interaction: {
+                mode: "nearest",
+                intersect: false,
+              },
+              plugins: {
+                legend: {
+                  position: "bottom",
+                },
+                tooltip: {
+                  callbacks: {
+                    title: (items) => {
+                      const ageGroup = items[0]?.label;
+                      return ageGroup ? `Age Group: ${ageGroup}` : "Age Group";
+                    },
+                    label: (context) => {
+                      const seconds = context.parsed.y;
+
+                      if (typeof seconds !== "number") {
+                        return `${context.dataset.label}: N/A`;
+                      }
+
+                      return `${context.dataset.label}: ${formatTime(seconds)}`;
+                    },
+                    afterLabel: (context) => {
+                      const dataset = context.dataset as BenchmarkDataset;
+                      return (
+                        dataset.benchmarkMeta.criticalByIndex.get(
+                          context.dataIndex,
+                        ) ?? ""
+                      );
+                    },
+                  },
+                },
+              },
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: "Age Group",
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: "Finish Time",
+                  },
+                  ticks: {
+                    callback: (value) => formatTime(Number(value)),
+                  },
+                },
+              },
+            },
+          },
+          );
+
+          benchmarkChartSummary.textContent = `${captionText}. Hover points for details; lower times are faster.`;
         };
 
         const setBenchmarkHeader = (columns: string[]) => {
