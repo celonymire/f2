@@ -5,7 +5,8 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, "..");
-const outputPath = path.join(projectRoot, "public", "data", "products.snapshot.json");
+const publicOutputPath = path.join(projectRoot, "public", "data", "products.snapshot.json");
+const srcOutputPath = path.join(projectRoot, "src", "data", "products.snapshot.json");
 
 async function fetchJson(url) {
   const response = await fetch(url, {
@@ -154,10 +155,13 @@ async function main() {
     products,
   };
 
-  await mkdir(path.dirname(outputPath), { recursive: true });
-  await writeFile(outputPath, `${JSON.stringify(snapshot, null, 2)}\n`, "utf8");
+  const serializedSnapshot = `${JSON.stringify(snapshot, null, 2)}\n`;
+  await mkdir(path.dirname(publicOutputPath), { recursive: true });
+  await mkdir(path.dirname(srcOutputPath), { recursive: true });
+  await writeFile(publicOutputPath, serializedSnapshot, "utf8");
+  await writeFile(srcOutputPath, serializedSnapshot, "utf8");
 
-  console.log(`Wrote ${products.length} products to ${outputPath}`);
+  console.log(`Wrote ${products.length} products to ${publicOutputPath} and ${srcOutputPath}`);
 }
 
 main().catch((error) => {

@@ -270,7 +270,7 @@ const classifyRaceRank = (timeSeconds: number, thresholds: RankThresholds) => {
 
 const loadRaceRankData = async () => {
   try {
-    const response = await fetch("/f2/data/race-ranks.csv");
+    const response = await fetch(`${import.meta.env.BASE_URL}data/race-ranks.csv`);
 
     if (!response.ok) {
       throw new Error(`Failed to load CSV (${response.status})`);
