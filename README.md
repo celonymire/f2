@@ -11,12 +11,13 @@ This project is configured to publish to GitHub Pages for the repository:
 ### First-time setup on GitHub
 
 1. Open repository Settings -> Pages.
-2. Set Source to `GitHub Actions`.
+2. Set Source to `Deploy from a branch`.
+3. Set Branch to `gh-pages` and folder to `/ (root)`.
 4. Save.
 
 ### Publish
 
-Deployment runs automatically on every push to `master` via:
+Deployment builds on pushes to `master` and after product sync runs, then publishes `dist` to `gh-pages` via:
 
 ```bash
 /.github/workflows/deploy-pages.yml
