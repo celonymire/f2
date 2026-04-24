@@ -1,6 +1,5 @@
 ---
 import Navbar from "../components/Navbar.astro";
-
 import { readFile } from "node:fs/promises";
 
 type Product = {
@@ -23,13 +22,16 @@ type ProductSnapshot = {
   products: Product[];
 };
 
-const snapshotPath = new URL("../../public/data/products.snapshot.json", import.meta.url);
 let snapshot: ProductSnapshot = {
   generatedAt: "",
   products: [],
 };
 
 try {
+  const snapshotPath = new URL(
+    "../../public/data/products.snapshot.json",
+    import.meta.url,
+  );
   const fileContent = await readFile(snapshotPath, "utf8");
   const parsed = JSON.parse(fileContent) as Partial<ProductSnapshot>;
   snapshot = {
@@ -39,7 +41,6 @@ try {
 } catch {
   // Keep page rendering even if snapshot is unavailable.
 }
-
 ---
 
 <html lang="en">
@@ -65,22 +66,23 @@ try {
           <p>No products found.</p>
         ) : (
           <ul>
-            {
-              snapshot.products.map((product) => (
-                <li>
-                  {
-                    product.imageUrl ? (
-                      <img src={product.imageUrl} alt={product.title} loading="lazy" />
-                    ) : (
-                      <span>No image</span>
-                    )
-                  }
-                  <br />
-                  {product.title} | {product.brand} | {product.category} | {product.currency} {product.price}
-                  | {product.availability} | source: {product.source}
-                </li>
-              ))
-            }
+            {snapshot.products.map((product) => (
+              <li>
+                {product.imageUrl ? (
+                  <img
+                    src={product.imageUrl}
+                    alt={product.title}
+                    loading="lazy"
+                  />
+                ) : (
+                  <span>No image</span>
+                )}
+                <br />
+                {product.title} | {product.brand} | {product.category} |{" "}
+                {product.currency} {product.price}| {product.availability} |
+                source: {product.source}
+              </li>
+            ))}
           </ul>
         )
       }
