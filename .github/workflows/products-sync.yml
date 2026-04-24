@@ -1,0 +1,50 @@
+name: Sync Product Snapshot
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Sync products snapshot
+        run: pnpm products:sync
+        env:
+          EBAY_APP_ID: ${{ secrets.EBAY_APP_ID }}
+
+      - name: Commit changes
+        run: |
+          if [[ -z "$(git status --porcelain public/data/products.snapshot.json)" ]]; then
+            echo "No product snapshot changes to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/data/products.snapshot.json
+          git commit -m "chore: sync products snapshot"
+          git push

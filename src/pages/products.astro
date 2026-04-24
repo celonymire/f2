@@ -1,6 +1,45 @@
 ---
 import Navbar from "../components/Navbar.astro";
 
+import { readFile } from "node:fs/promises";
+
+type Product = {
+  id: string;
+  source: string;
+  sourceProductId: string;
+  title: string;
+  brand: string;
+  category: string;
+  price: number;
+  currency: string;
+  availability: string;
+  imageUrl: string;
+  productUrl: string;
+  fetchedAt: string;
+};
+
+type ProductSnapshot = {
+  generatedAt: string;
+  products: Product[];
+};
+
+const snapshotPath = new URL("../../public/data/products.snapshot.json", import.meta.url);
+let snapshot: ProductSnapshot = {
+  generatedAt: "",
+  products: [],
+};
+
+try {
+  const fileContent = await readFile(snapshotPath, "utf8");
+  const parsed = JSON.parse(fileContent) as Partial<ProductSnapshot>;
+  snapshot = {
+    generatedAt: parsed.generatedAt ?? "",
+    products: Array.isArray(parsed.products) ? parsed.products : [],
+  };
+} catch {
+  // Keep page rendering even if snapshot is unavailable.
+}
+
 ---
 
 <html lang="en">
@@ -19,47 +58,32 @@ import Navbar from "../components/Navbar.astro";
     </header>
 
     <main>
-      <section>
-        <h2>Featured Products</h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mattis
-          consectetur purus sit amet fermentum.
-        </p>
-      </section>
+      <p>Snapshot generated at: {snapshot.generatedAt || "unknown"}</p>
 
-      <section>
-        <h2>List</h2>
-        <ul>
-          <li>Product Lorem - dolor sit amet.</li>
-          <li>Product Ipsum - nibh ultricies vehicula.</li>
-          <li>Product Dolor - porta felis euismod.</li>
-          <li>Product Amet - cursus magna.</li>
-        </ul>
-      </section>
+      {
+        snapshot.products.length === 0 ? (
+          <p>No products found.</p>
+        ) : (
+          <ul>
+            {
+              snapshot.products.map((product) => (
+                <li>
+                  {
+                    product.imageUrl ? (
+                      <img src={product.imageUrl} alt={product.title} loading="lazy" />
+                    ) : (
+                      <span>No image</span>
+                    )
+                  }
+                  <br />
+                  {product.title} | {product.brand} | {product.category} | {product.currency} {product.price}
+                  | {product.availability} | source: {product.source}
+                </li>
+              ))
+            }
+          </ul>
+        )
+      }
     </main>
-
-    <style>
-      body {
-        font-family: sans-serif;
-        line-height: 1.5;
-        margin: 0;
-        padding: 1.5rem;
-      }
-
-      header {
-        margin-bottom: 1.5rem;
-      }
-
-      nav {
-        display: flex;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-      }
-
-      main {
-        display: grid;
-        gap: 1.25rem;
-      }
-    </style>
   </body>
 </html>
