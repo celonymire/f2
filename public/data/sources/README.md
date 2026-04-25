@@ -1,6 +1,6 @@
 # Race Benchmark Source Data Contract
 
-This directory contains source inputs used to generate `public/data/race-ranks.csv`
+This directory contains source inputs used to generate `src/data/race-ranks.json`
 from independent race-result datasets.
 
 ## Required input file
@@ -31,8 +31,7 @@ pnpm race-ranks:validate
 
 Outputs:
 
-- `public/data/race-ranks.csv`
-- `public/data/race-ranks.metadata.json`
+- `src/data/race-ranks.json`
 
 ## Source governance
 

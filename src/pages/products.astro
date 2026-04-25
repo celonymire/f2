@@ -1,28 +1,9 @@
 ---
 import Navbar from "../components/Navbar.astro";
 import snapshotData from "../data/products.snapshot.json";
+import { ProductSnapshotSchema } from "../data/schemas";
 
-type Product = {
-  id: string;
-  source: string;
-  sourceProductId: string;
-  title: string;
-  brand: string;
-  category: string;
-  price: number;
-  currency: string;
-  availability: string;
-  imageUrl: string;
-  productUrl: string;
-  fetchedAt: string;
-};
-
-type ProductSnapshot = {
-  generatedAt: string;
-  products: Product[];
-};
-
-const snapshot = snapshotData as ProductSnapshot;
+const snapshot = ProductSnapshotSchema.parse(snapshotData);
 ---
 
 <html lang="en">

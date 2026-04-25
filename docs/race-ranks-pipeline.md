@@ -5,7 +5,7 @@ independent, reproducible benchmark generation workflow.
 
 ## Goal
 
-Generate `public/data/race-ranks.csv` for:
+Generate `src/data/race-ranks.json` for:
 
 - distances: `5k`, `10k`, `half-marathon`, `marathon`
 - age groups: `10` through `90` in 5-year steps

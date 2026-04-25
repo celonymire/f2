@@ -1,0 +1,1362 @@
+[
+  {
+    "distance": "5k",
+    "age_group": "10",
+    "gender": "male",
+    "beginner": "37:39",
+    "novice": "31:29",
+    "intermediate": "26:56",
+    "advanced": "23:35",
+    "elite": "21:07"
+  },
+  {
+    "distance": "5k",
+    "age_group": "15",
+    "gender": "male",
+    "beginner": "32:35",
+    "novice": "27:14",
+    "intermediate": "23:19",
+    "advanced": "20:25",
+    "elite": "18:17"
+  },
+  {
+    "distance": "5k",
+    "age_group": "20",
+    "gender": "male",
+    "beginner": "31:29",
+    "novice": "26:19",
+    "intermediate": "22:31",
+    "advanced": "19:44",
+    "elite": "17:40"
+  },
+  {
+    "distance": "5k",
+    "age_group": "25",
+    "gender": "male",
+    "beginner": "31:29",
+    "novice": "26:19",
+    "intermediate": "22:31",
+    "advanced": "19:44",
+    "elite": "17:40"
+  },
+  {
+    "distance": "5k",
+    "age_group": "30",
+    "gender": "male",
+    "beginner": "31:29",
+    "novice": "26:19",
+    "intermediate": "22:32",
+    "advanced": "19:44",
+    "elite": "17:40"
+  },
+  {
+    "distance": "5k",
+    "age_group": "35",
+    "gender": "male",
+    "beginner": "31:59",
+    "novice": "26:45",
+    "intermediate": "22:53",
+    "advanced": "20:03",
+    "elite": "17:57"
+  },
+  {
+    "distance": "5k",
+    "age_group": "40",
+    "gender": "male",
+    "beginner": "33:09",
+    "novice": "27:43",
+    "intermediate": "23:43",
+    "advanced": "20:46",
+    "elite": "18:36"
+  },
+  {
+    "distance": "5k",
+    "age_group": "45",
+    "gender": "male",
+    "beginner": "34:25",
+    "novice": "28:47",
+    "intermediate": "24:38",
+    "advanced": "21:34",
+    "elite": "19:19"
+  },
+  {
+    "distance": "5k",
+    "age_group": "50",
+    "gender": "male",
+    "beginner": "35:47",
+    "novice": "29:55",
+    "intermediate": "25:36",
+    "advanced": "22:26",
+    "elite": "20:05"
+  },
+  {
+    "distance": "5k",
+    "age_group": "55",
+    "gender": "male",
+    "beginner": "37:16",
+    "novice": "31:10",
+    "intermediate": "26:40",
+    "advanced": "23:21",
+    "elite": "20:55"
+  },
+  {
+    "distance": "5k",
+    "age_group": "60",
+    "gender": "male",
+    "beginner": "38:53",
+    "novice": "32:31",
+    "intermediate": "27:49",
+    "advanced": "24:22",
+    "elite": "21:49"
+  },
+  {
+    "distance": "5k",
+    "age_group": "65",
+    "gender": "male",
+    "beginner": "40:38",
+    "novice": "33:59",
+    "intermediate": "29:05",
+    "advanced": "25:28",
+    "elite": "22:48"
+  },
+  {
+    "distance": "5k",
+    "age_group": "70",
+    "gender": "male",
+    "beginner": "42:43",
+    "novice": "35:43",
+    "intermediate": "30:34",
+    "advanced": "26:46",
+    "elite": "23:58"
+  },
+  {
+    "distance": "5k",
+    "age_group": "75",
+    "gender": "male",
+    "beginner": "45:55",
+    "novice": "38:23",
+    "intermediate": "32:51",
+    "advanced": "28:46",
+    "elite": "25:46"
+  },
+  {
+    "distance": "5k",
+    "age_group": "80",
+    "gender": "male",
+    "beginner": "50:49",
+    "novice": "42:30",
+    "intermediate": "36:22",
+    "advanced": "31:51",
+    "elite": "28:31"
+  },
+  {
+    "distance": "5k",
+    "age_group": "85",
+    "gender": "male",
+    "beginner": "58:28",
+    "novice": "48:53",
+    "intermediate": "41:50",
+    "advanced": "36:38",
+    "elite": "32:48"
+  },
+  {
+    "distance": "5k",
+    "age_group": "90",
+    "gender": "male",
+    "beginner": "01:11:08",
+    "novice": "59:29",
+    "intermediate": "50:54",
+    "advanced": "44:35",
+    "elite": "39:55"
+  },
+  {
+    "distance": "5k",
+    "age_group": "10",
+    "gender": "female",
+    "beginner": "41:29",
+    "novice": "35:16",
+    "intermediate": "30:33",
+    "advanced": "27:00",
+    "elite": "24:20"
+  },
+  {
+    "distance": "5k",
+    "age_group": "15",
+    "gender": "female",
+    "beginner": "37:14",
+    "novice": "31:40",
+    "intermediate": "27:26",
+    "advanced": "24:14",
+    "elite": "21:50"
+  },
+  {
+    "distance": "5k",
+    "age_group": "20",
+    "gender": "female",
+    "beginner": "35:27",
+    "novice": "30:08",
+    "intermediate": "26:07",
+    "advanced": "23:04",
+    "elite": "20:47"
+  },
+  {
+    "distance": "5k",
+    "age_group": "25",
+    "gender": "female",
+    "beginner": "35:27",
+    "novice": "30:08",
+    "intermediate": "26:07",
+    "advanced": "23:04",
+    "elite": "20:47"
+  },
+  {
+    "distance": "5k",
+    "age_group": "30",
+    "gender": "female",
+    "beginner": "35:27",
+    "novice": "30:08",
+    "intermediate": "26:07",
+    "advanced": "23:04",
+    "elite": "20:47"
+  },
+  {
+    "distance": "5k",
+    "age_group": "35",
+    "gender": "female",
+    "beginner": "35:40",
+    "novice": "30:20",
+    "intermediate": "26:17",
+    "advanced": "23:13",
+    "elite": "20:56"
+  },
+  {
+    "distance": "5k",
+    "age_group": "40",
+    "gender": "female",
+    "beginner": "36:25",
+    "novice": "30:58",
+    "intermediate": "26:49",
+    "advanced": "23:42",
+    "elite": "21:22"
+  },
+  {
+    "distance": "5k",
+    "age_group": "45",
+    "gender": "female",
+    "beginner": "37:43",
+    "novice": "32:04",
+    "intermediate": "27:47",
+    "advanced": "24:33",
+    "elite": "22:07"
+  },
+  {
+    "distance": "5k",
+    "age_group": "50",
+    "gender": "female",
+    "beginner": "39:39",
+    "novice": "33:43",
+    "intermediate": "29:13",
+    "advanced": "25:49",
+    "elite": "23:16"
+  },
+  {
+    "distance": "5k",
+    "age_group": "55",
+    "gender": "female",
+    "beginner": "41:56",
+    "novice": "35:40",
+    "intermediate": "30:54",
+    "advanced": "27:18",
+    "elite": "24:36"
+  },
+  {
+    "distance": "5k",
+    "age_group": "60",
+    "gender": "female",
+    "beginner": "44:29",
+    "novice": "37:50",
+    "intermediate": "32:47",
+    "advanced": "28:58",
+    "elite": "26:06"
+  },
+  {
+    "distance": "5k",
+    "age_group": "65",
+    "gender": "female",
+    "beginner": "47:23",
+    "novice": "40:18",
+    "intermediate": "34:54",
+    "advanced": "30:51",
+    "elite": "27:48"
+  },
+  {
+    "distance": "5k",
+    "age_group": "70",
+    "gender": "female",
+    "beginner": "50:40",
+    "novice": "43:05",
+    "intermediate": "37:20",
+    "advanced": "32:59",
+    "elite": "29:43"
+  },
+  {
+    "distance": "5k",
+    "age_group": "75",
+    "gender": "female",
+    "beginner": "54:27",
+    "novice": "46:18",
+    "intermediate": "40:07",
+    "advanced": "35:27",
+    "elite": "31:56"
+  },
+  {
+    "distance": "5k",
+    "age_group": "80",
+    "gender": "female",
+    "beginner": "58:57",
+    "novice": "50:07",
+    "intermediate": "43:25",
+    "advanced": "38:22",
+    "elite": "34:35"
+  },
+  {
+    "distance": "5k",
+    "age_group": "85",
+    "gender": "female",
+    "beginner": "01:06:22",
+    "novice": "56:26",
+    "intermediate": "48:54",
+    "advanced": "43:12",
+    "elite": "38:56"
+  },
+  {
+    "distance": "5k",
+    "age_group": "90",
+    "gender": "female",
+    "beginner": "01:19:59",
+    "novice": "01:08:01",
+    "intermediate": "58:55",
+    "advanced": "52:04",
+    "elite": "46:55"
+  },
+  {
+    "distance": "10k",
+    "age_group": "10",
+    "gender": "male",
+    "beginner": "01:18:09",
+    "novice": "01:05:13",
+    "intermediate": "55:45",
+    "advanced": "48:48",
+    "elite": "43:43"
+  },
+  {
+    "distance": "10k",
+    "age_group": "15",
+    "gender": "male",
+    "beginner": "01:07:39",
+    "novice": "56:28",
+    "intermediate": "48:15",
+    "advanced": "42:15",
+    "elite": "37:51"
+  },
+  {
+    "distance": "10k",
+    "age_group": "20",
+    "gender": "male",
+    "beginner": "01:05:30",
+    "novice": "54:39",
+    "intermediate": "46:43",
+    "advanced": "40:54",
+    "elite": "36:38"
+  },
+  {
+    "distance": "10k",
+    "age_group": "25",
+    "gender": "male",
+    "beginner": "01:05:30",
+    "novice": "54:39",
+    "intermediate": "46:43",
+    "advanced": "40:54",
+    "elite": "36:38"
+  },
+  {
+    "distance": "10k",
+    "age_group": "30",
+    "gender": "male",
+    "beginner": "01:05:30",
+    "novice": "54:39",
+    "intermediate": "46:43",
+    "advanced": "40:54",
+    "elite": "36:38"
+  },
+  {
+    "distance": "10k",
+    "age_group": "35",
+    "gender": "male",
+    "beginner": "01:06:06",
+    "novice": "55:09",
+    "intermediate": "47:09",
+    "advanced": "41:16",
+    "elite": "36:58"
+  },
+  {
+    "distance": "10k",
+    "age_group": "40",
+    "gender": "male",
+    "beginner": "01:07:58",
+    "novice": "56:43",
+    "intermediate": "48:29",
+    "advanced": "42:26",
+    "elite": "38:01"
+  },
+  {
+    "distance": "10k",
+    "age_group": "45",
+    "gender": "male",
+    "beginner": "01:10:43",
+    "novice": "59:01",
+    "intermediate": "50:26",
+    "advanced": "44:10",
+    "elite": "39:33"
+  },
+  {
+    "distance": "10k",
+    "age_group": "50",
+    "gender": "male",
+    "beginner": "01:13:42",
+    "novice": "01:01:30",
+    "intermediate": "52:34",
+    "advanced": "46:01",
+    "elite": "41:14"
+  },
+  {
+    "distance": "10k",
+    "age_group": "55",
+    "gender": "male",
+    "beginner": "01:16:57",
+    "novice": "01:04:13",
+    "intermediate": "54:53",
+    "advanced": "48:03",
+    "elite": "43:03"
+  },
+  {
+    "distance": "10k",
+    "age_group": "60",
+    "gender": "male",
+    "beginner": "01:20:30",
+    "novice": "01:07:11",
+    "intermediate": "57:25",
+    "advanced": "50:16",
+    "elite": "45:02"
+  },
+  {
+    "distance": "10k",
+    "age_group": "65",
+    "gender": "male",
+    "beginner": "01:24:23",
+    "novice": "01:10:25",
+    "intermediate": "01:00:11",
+    "advanced": "52:42",
+    "elite": "47:12"
+  },
+  {
+    "distance": "10k",
+    "age_group": "70",
+    "gender": "male",
+    "beginner": "01:28:40",
+    "novice": "01:14:00",
+    "intermediate": "01:03:15",
+    "advanced": "55:22",
+    "elite": "49:36"
+  },
+  {
+    "distance": "10k",
+    "age_group": "75",
+    "gender": "male",
+    "beginner": "01:34:32",
+    "novice": "01:18:53",
+    "intermediate": "01:07:26",
+    "advanced": "59:02",
+    "elite": "52:53"
+  },
+  {
+    "distance": "10k",
+    "age_group": "80",
+    "gender": "male",
+    "beginner": "01:43:56",
+    "novice": "01:26:45",
+    "intermediate": "01:14:08",
+    "advanced": "01:04:54",
+    "elite": "58:08"
+  },
+  {
+    "distance": "10k",
+    "age_group": "85",
+    "gender": "male",
+    "beginner": "01:58:54",
+    "novice": "01:39:14",
+    "intermediate": "01:24:49",
+    "advanced": "01:14:15",
+    "elite": "01:06:31"
+  },
+  {
+    "distance": "10k",
+    "age_group": "90",
+    "gender": "male",
+    "beginner": "02:24:04",
+    "novice": "02:00:14",
+    "intermediate": "01:42:45",
+    "advanced": "01:29:58",
+    "elite": "01:20:35"
+  },
+  {
+    "distance": "10k",
+    "age_group": "10",
+    "gender": "female",
+    "beginner": "01:28:35",
+    "novice": "01:15:13",
+    "intermediate": "01:05:03",
+    "advanced": "57:26",
+    "elite": "51:44"
+  },
+  {
+    "distance": "10k",
+    "age_group": "15",
+    "gender": "female",
+    "beginner": "01:18:52",
+    "novice": "01:06:58",
+    "intermediate": "57:55",
+    "advanced": "51:07",
+    "elite": "46:03"
+  },
+  {
+    "distance": "10k",
+    "age_group": "20",
+    "gender": "female",
+    "beginner": "01:13:58",
+    "novice": "01:02:48",
+    "intermediate": "54:19",
+    "advanced": "47:57",
+    "elite": "43:12"
+  },
+  {
+    "distance": "10k",
+    "age_group": "25",
+    "gender": "female",
+    "beginner": "01:13:49",
+    "novice": "01:02:40",
+    "intermediate": "54:13",
+    "advanced": "47:51",
+    "elite": "43:06"
+  },
+  {
+    "distance": "10k",
+    "age_group": "30",
+    "gender": "female",
+    "beginner": "01:13:58",
+    "novice": "01:02:48",
+    "intermediate": "54:19",
+    "advanced": "47:57",
+    "elite": "43:12"
+  },
+  {
+    "distance": "10k",
+    "age_group": "35",
+    "gender": "female",
+    "beginner": "01:14:53",
+    "novice": "01:03:35",
+    "intermediate": "55:00",
+    "advanced": "48:33",
+    "elite": "43:44"
+  },
+  {
+    "distance": "10k",
+    "age_group": "40",
+    "gender": "female",
+    "beginner": "01:16:43",
+    "novice": "01:05:08",
+    "intermediate": "56:20",
+    "advanced": "49:44",
+    "elite": "44:48"
+  },
+  {
+    "distance": "10k",
+    "age_group": "45",
+    "gender": "female",
+    "beginner": "01:19:34",
+    "novice": "01:07:33",
+    "intermediate": "58:26",
+    "advanced": "51:35",
+    "elite": "46:28"
+  },
+  {
+    "distance": "10k",
+    "age_group": "50",
+    "gender": "female",
+    "beginner": "01:23:41",
+    "novice": "01:11:03",
+    "intermediate": "01:01:27",
+    "advanced": "54:15",
+    "elite": "48:52"
+  },
+  {
+    "distance": "10k",
+    "age_group": "55",
+    "gender": "female",
+    "beginner": "01:28:40",
+    "novice": "01:15:17",
+    "intermediate": "01:05:07",
+    "advanced": "57:29",
+    "elite": "51:47"
+  },
+  {
+    "distance": "10k",
+    "age_group": "60",
+    "gender": "female",
+    "beginner": "01:34:18",
+    "novice": "01:20:04",
+    "intermediate": "01:09:15",
+    "advanced": "01:01:08",
+    "elite": "55:04"
+  },
+  {
+    "distance": "10k",
+    "age_group": "65",
+    "gender": "female",
+    "beginner": "01:40:42",
+    "novice": "01:25:30",
+    "intermediate": "01:13:57",
+    "advanced": "01:05:16",
+    "elite": "58:48"
+  },
+  {
+    "distance": "10k",
+    "age_group": "70",
+    "gender": "female",
+    "beginner": "01:48:01",
+    "novice": "01:31:43",
+    "intermediate": "01:19:20",
+    "advanced": "01:10:01",
+    "elite": "01:03:05"
+  },
+  {
+    "distance": "10k",
+    "age_group": "75",
+    "gender": "female",
+    "beginner": "01:56:29",
+    "novice": "01:38:54",
+    "intermediate": "01:25:33",
+    "advanced": "01:15:31",
+    "elite": "01:08:01"
+  },
+  {
+    "distance": "10k",
+    "age_group": "80",
+    "gender": "female",
+    "beginner": "02:08:29",
+    "novice": "01:49:06",
+    "intermediate": "01:34:22",
+    "advanced": "01:23:18",
+    "elite": "01:15:02"
+  },
+  {
+    "distance": "10k",
+    "age_group": "85",
+    "gender": "female",
+    "beginner": "02:28:44",
+    "novice": "02:06:17",
+    "intermediate": "01:49:14",
+    "advanced": "01:36:25",
+    "elite": "01:26:51"
+  },
+  {
+    "distance": "10k",
+    "age_group": "90",
+    "gender": "female",
+    "beginner": "03:04:58",
+    "novice": "02:37:02",
+    "intermediate": "02:15:50",
+    "advanced": "01:59:54",
+    "elite": "01:48:00"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "10",
+    "gender": "male",
+    "beginner": "02:53:28",
+    "novice": "02:25:01",
+    "intermediate": "02:03:56",
+    "advanced": "01:48:22",
+    "elite": "01:36:56"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "15",
+    "gender": "male",
+    "beginner": "02:30:07",
+    "novice": "02:05:30",
+    "intermediate": "01:47:15",
+    "advanced": "01:33:47",
+    "elite": "01:23:53"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "20",
+    "gender": "male",
+    "beginner": "02:24:57",
+    "novice": "02:01:11",
+    "intermediate": "01:43:33",
+    "advanced": "01:30:33",
+    "elite": "01:21:00"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "25",
+    "gender": "male",
+    "beginner": "02:24:57",
+    "novice": "02:01:11",
+    "intermediate": "01:43:33",
+    "advanced": "01:30:33",
+    "elite": "01:21:00"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "30",
+    "gender": "male",
+    "beginner": "02:24:57",
+    "novice": "02:01:11",
+    "intermediate": "01:43:33",
+    "advanced": "01:30:33",
+    "elite": "01:21:00"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "35",
+    "gender": "male",
+    "beginner": "02:25:45",
+    "novice": "02:01:51",
+    "intermediate": "01:44:08",
+    "advanced": "01:31:03",
+    "elite": "01:21:26"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "40",
+    "gender": "male",
+    "beginner": "02:29:29",
+    "novice": "02:04:59",
+    "intermediate": "01:46:48",
+    "advanced": "01:33:24",
+    "elite": "01:23:32"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "45",
+    "gender": "male",
+    "beginner": "02:35:40",
+    "novice": "02:10:09",
+    "intermediate": "01:51:13",
+    "advanced": "01:37:15",
+    "elite": "01:26:59"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "50",
+    "gender": "male",
+    "beginner": "02:42:28",
+    "novice": "02:15:49",
+    "intermediate": "01:56:04",
+    "advanced": "01:41:30",
+    "elite": "01:30:47"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "55",
+    "gender": "male",
+    "beginner": "02:49:52",
+    "novice": "02:22:01",
+    "intermediate": "02:01:22",
+    "advanced": "01:46:07",
+    "elite": "01:34:55"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "60",
+    "gender": "male",
+    "beginner": "02:57:59",
+    "novice": "02:28:48",
+    "intermediate": "02:07:09",
+    "advanced": "01:51:12",
+    "elite": "01:39:27"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "65",
+    "gender": "male",
+    "beginner": "03:06:54",
+    "novice": "02:36:16",
+    "intermediate": "02:13:32",
+    "advanced": "01:56:46",
+    "elite": "01:44:26"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "70",
+    "gender": "male",
+    "beginner": "03:16:47",
+    "novice": "02:44:31",
+    "intermediate": "02:20:35",
+    "advanced": "02:02:56",
+    "elite": "01:49:57"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "75",
+    "gender": "male",
+    "beginner": "03:30:19",
+    "novice": "02:55:50",
+    "intermediate": "02:30:15",
+    "advanced": "02:11:24",
+    "elite": "01:57:31"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "80",
+    "gender": "male",
+    "beginner": "03:52:02",
+    "novice": "03:13:59",
+    "intermediate": "02:45:46",
+    "advanced": "02:24:57",
+    "elite": "02:09:39"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "85",
+    "gender": "male",
+    "beginner": "04:26:50",
+    "novice": "03:43:05",
+    "intermediate": "03:10:39",
+    "advanced": "02:46:42",
+    "elite": "02:29:06"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "90",
+    "gender": "male",
+    "beginner": "05:26:01",
+    "novice": "04:32:34",
+    "intermediate": "03:52:55",
+    "advanced": "03:23:41",
+    "elite": "03:02:10"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "10",
+    "gender": "female",
+    "beginner": "03:24:32",
+    "novice": "02:54:12",
+    "intermediate": "02:30:51",
+    "advanced": "02:13:09",
+    "elite": "01:59:51"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "15",
+    "gender": "female",
+    "beginner": "02:58:13",
+    "novice": "02:31:46",
+    "intermediate": "02:11:26",
+    "advanced": "01:56:01",
+    "elite": "01:44:26"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "20",
+    "gender": "female",
+    "beginner": "02:44:14",
+    "novice": "02:19:52",
+    "intermediate": "02:01:07",
+    "advanced": "01:46:54",
+    "elite": "01:36:14"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "25",
+    "gender": "female",
+    "beginner": "02:42:59",
+    "novice": "02:18:48",
+    "intermediate": "02:00:12",
+    "advanced": "01:46:06",
+    "elite": "01:35:30"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "30",
+    "gender": "female",
+    "beginner": "02:43:02",
+    "novice": "02:18:50",
+    "intermediate": "02:00:14",
+    "advanced": "01:46:08",
+    "elite": "01:35:32"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "35",
+    "gender": "female",
+    "beginner": "02:44:34",
+    "novice": "02:20:09",
+    "intermediate": "02:01:22",
+    "advanced": "01:47:07",
+    "elite": "01:36:26"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "40",
+    "gender": "female",
+    "beginner": "02:48:23",
+    "novice": "02:23:24",
+    "intermediate": "02:04:11",
+    "advanced": "01:49:37",
+    "elite": "01:38:40"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "45",
+    "gender": "female",
+    "beginner": "02:54:51",
+    "novice": "02:28:55",
+    "intermediate": "02:08:57",
+    "advanced": "01:53:49",
+    "elite": "01:42:28"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "50",
+    "gender": "female",
+    "beginner": "03:04:28",
+    "novice": "02:37:06",
+    "intermediate": "02:16:03",
+    "advanced": "02:00:05",
+    "elite": "01:48:06"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "55",
+    "gender": "female",
+    "beginner": "03:16:00",
+    "novice": "02:46:55",
+    "intermediate": "02:24:34",
+    "advanced": "02:07:36",
+    "elite": "01:54:51"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "60",
+    "gender": "female",
+    "beginner": "03:29:05",
+    "novice": "02:58:04",
+    "intermediate": "02:34:12",
+    "advanced": "02:16:06",
+    "elite": "02:02:31"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "65",
+    "gender": "female",
+    "beginner": "03:44:02",
+    "novice": "03:10:47",
+    "intermediate": "02:45:14",
+    "advanced": "02:25:50",
+    "elite": "02:11:16"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "70",
+    "gender": "female",
+    "beginner": "04:01:16",
+    "novice": "03:25:28",
+    "intermediate": "02:57:57",
+    "advanced": "02:37:04",
+    "elite": "02:21:23"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "75",
+    "gender": "female",
+    "beginner": "04:21:24",
+    "novice": "03:42:37",
+    "intermediate": "03:12:47",
+    "advanced": "02:50:10",
+    "elite": "02:33:10"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "80",
+    "gender": "female",
+    "beginner": "04:48:34",
+    "novice": "04:05:45",
+    "intermediate": "03:32:49",
+    "advanced": "03:07:51",
+    "elite": "02:49:05"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "85",
+    "gender": "female",
+    "beginner": "05:35:00",
+    "novice": "04:45:18",
+    "intermediate": "04:07:04",
+    "advanced": "03:38:05",
+    "elite": "03:16:18"
+  },
+  {
+    "distance": "half-marathon",
+    "age_group": "90",
+    "gender": "female",
+    "beginner": "06:59:50",
+    "novice": "05:57:32",
+    "intermediate": "05:09:38",
+    "advanced": "04:33:18",
+    "elite": "04:06:01"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "10",
+    "gender": "male",
+    "beginner": "05:55:27",
+    "novice": "04:59:17",
+    "intermediate": "04:17:13",
+    "advanced": "03:45:50",
+    "elite": "03:22:31"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "15",
+    "gender": "male",
+    "beginner": "05:07:36",
+    "novice": "04:19:00",
+    "intermediate": "03:42:35",
+    "advanced": "03:15:26",
+    "elite": "02:55:15"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "20",
+    "gender": "male",
+    "beginner": "04:57:01",
+    "novice": "04:10:05",
+    "intermediate": "03:34:56",
+    "advanced": "03:08:42",
+    "elite": "02:49:13"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "25",
+    "gender": "male",
+    "beginner": "04:57:01",
+    "novice": "04:10:05",
+    "intermediate": "03:34:56",
+    "advanced": "03:08:42",
+    "elite": "02:49:13"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "30",
+    "gender": "male",
+    "beginner": "04:57:01",
+    "novice": "04:10:05",
+    "intermediate": "03:34:56",
+    "advanced": "03:08:42",
+    "elite": "02:49:13"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "35",
+    "gender": "male",
+    "beginner": "04:58:40",
+    "novice": "04:11:28",
+    "intermediate": "03:36:07",
+    "advanced": "03:09:45",
+    "elite": "02:50:09"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "40",
+    "gender": "male",
+    "beginner": "05:06:20",
+    "novice": "04:17:56",
+    "intermediate": "03:41:40",
+    "advanced": "03:14:37",
+    "elite": "02:54:32"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "45",
+    "gender": "male",
+    "beginner": "05:19:00",
+    "novice": "04:28:36",
+    "intermediate": "03:50:50",
+    "advanced": "03:22:40",
+    "elite": "03:01:45"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "50",
+    "gender": "male",
+    "beginner": "05:32:54",
+    "novice": "04:40:18",
+    "intermediate": "04:00:54",
+    "advanced": "03:31:30",
+    "elite": "03:09:40"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "55",
+    "gender": "male",
+    "beginner": "05:48:05",
+    "novice": "04:53:05",
+    "intermediate": "04:11:53",
+    "advanced": "03:41:09",
+    "elite": "03:18:19"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "60",
+    "gender": "male",
+    "beginner": "06:04:42",
+    "novice": "05:07:05",
+    "intermediate": "04:23:55",
+    "advanced": "03:51:43",
+    "elite": "03:27:47"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "65",
+    "gender": "male",
+    "beginner": "06:23:00",
+    "novice": "05:22:29",
+    "intermediate": "04:37:09",
+    "advanced": "04:03:20",
+    "elite": "03:38:12"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "70",
+    "gender": "male",
+    "beginner": "06:43:14",
+    "novice": "05:39:31",
+    "intermediate": "04:51:47",
+    "advanced": "04:16:11",
+    "elite": "03:49:44"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "75",
+    "gender": "male",
+    "beginner": "07:10:54",
+    "novice": "06:02:49",
+    "intermediate": "05:11:49",
+    "advanced": "04:33:46",
+    "elite": "04:05:30"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "80",
+    "gender": "male",
+    "beginner": "07:55:36",
+    "novice": "06:40:28",
+    "intermediate": "05:44:10",
+    "advanced": "05:02:10",
+    "elite": "04:30:58"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "85",
+    "gender": "male",
+    "beginner": "09:07:48",
+    "novice": "07:41:15",
+    "intermediate": "06:36:24",
+    "advanced": "05:48:02",
+    "elite": "05:12:06"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "90",
+    "gender": "male",
+    "beginner": "11:11:23",
+    "novice": "09:25:18",
+    "intermediate": "08:05:50",
+    "advanced": "07:06:33",
+    "elite": "06:22:30"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "10",
+    "gender": "female",
+    "beginner": "06:42:48",
+    "novice": "05:45:13",
+    "intermediate": "05:00:40",
+    "advanced": "04:26:36",
+    "elite": "04:00:47"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "15",
+    "gender": "female",
+    "beginner": "05:58:13",
+    "novice": "05:07:01",
+    "intermediate": "04:27:24",
+    "advanced": "03:57:06",
+    "elite": "03:34:08"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "20",
+    "gender": "female",
+    "beginner": "05:34:34",
+    "novice": "04:46:45",
+    "intermediate": "04:09:44",
+    "advanced": "03:41:26",
+    "elite": "03:20:00"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "25",
+    "gender": "female",
+    "beginner": "05:32:25",
+    "novice": "04:44:55",
+    "intermediate": "04:08:09",
+    "advanced": "03:40:01",
+    "elite": "03:18:43"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "30",
+    "gender": "female",
+    "beginner": "05:32:25",
+    "novice": "04:44:55",
+    "intermediate": "04:08:09",
+    "advanced": "03:40:01",
+    "elite": "03:18:43"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "35",
+    "gender": "female",
+    "beginner": "05:33:44",
+    "novice": "04:46:02",
+    "intermediate": "04:09:07",
+    "advanced": "03:40:53",
+    "elite": "03:19:30"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "40",
+    "gender": "female",
+    "beginner": "05:40:32",
+    "novice": "04:51:51",
+    "intermediate": "04:14:12",
+    "advanced": "03:45:23",
+    "elite": "03:23:34"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "45",
+    "gender": "female",
+    "beginner": "05:53:50",
+    "novice": "05:03:15",
+    "intermediate": "04:24:07",
+    "advanced": "03:54:11",
+    "elite": "03:31:31"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "50",
+    "gender": "female",
+    "beginner": "06:14:41",
+    "novice": "05:21:08",
+    "intermediate": "04:39:42",
+    "advanced": "04:08:00",
+    "elite": "03:43:59"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "55",
+    "gender": "female",
+    "beginner": "06:39:36",
+    "novice": "05:42:29",
+    "intermediate": "04:58:17",
+    "advanced": "04:24:29",
+    "elite": "03:58:52"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "60",
+    "gender": "female",
+    "beginner": "07:08:03",
+    "novice": "06:06:52",
+    "intermediate": "05:19:31",
+    "advanced": "04:43:19",
+    "elite": "04:15:53"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "65",
+    "gender": "female",
+    "beginner": "07:40:52",
+    "novice": "06:35:00",
+    "intermediate": "05:44:01",
+    "advanced": "05:05:02",
+    "elite": "04:35:30"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "70",
+    "gender": "female",
+    "beginner": "08:19:08",
+    "novice": "07:07:48",
+    "intermediate": "06:12:35",
+    "advanced": "05:30:22",
+    "elite": "04:58:22"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "75",
+    "gender": "female",
+    "beginner": "09:04:41",
+    "novice": "07:46:50",
+    "intermediate": "06:46:36",
+    "advanced": "06:00:31",
+    "elite": "05:25:36"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "80",
+    "gender": "female",
+    "beginner": "10:14:28",
+    "novice": "08:46:38",
+    "intermediate": "07:38:40",
+    "advanced": "06:46:42",
+    "elite": "06:07:19"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "85",
+    "gender": "female",
+    "beginner": "12:15:56",
+    "novice": "10:30:45",
+    "intermediate": "09:09:21",
+    "advanced": "08:07:06",
+    "elite": "07:19:56"
+  },
+  {
+    "distance": "marathon",
+    "age_group": "90",
+    "gender": "female",
+    "beginner": "16:10:52",
+    "novice": "13:52:06",
+    "intermediate": "12:04:43",
+    "advanced": "10:42:35",
+    "elite": "09:40:22"
+  }
+]

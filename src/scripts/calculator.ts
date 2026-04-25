@@ -1,4 +1,6 @@
 import { Chart, registerables, type ChartDataset } from "chart.js";
+import raceRanks from "../data/race-ranks.json";
+import { RaceRanksSchema } from "../data/schemas";
 
 Chart.register(...registerables);
 
@@ -268,38 +270,22 @@ const classifyRaceRank = (timeSeconds: number, thresholds: RankThresholds) => {
   return "Below Beginner";
 };
 
-const loadRaceRankData = async () => {
+const loadRaceRankData = () => {
   try {
-    const response = await fetch(`/f2/data/race-ranks.csv`);
+    const validatedRaceRanks = RaceRanksSchema.parse(raceRanks);
 
-    if (!response.ok) {
-      throw new Error(`Failed to load CSV (${response.status})`);
-    }
-
-    const text = await response.text();
-    const lines = text.split(/\r?\n/).filter((line) => line.trim().length > 0);
-
-    if (lines.length <= 1) {
-      throw new Error("CSV has no data rows");
-    }
-
-    for (let index = 1; index < lines.length; index += 1) {
-      const row = lines[index].split(",").map((value) => value.trim());
-
-      if (row.length !== 8) {
-        continue;
-      }
-
-      const [
+    for (const record of validatedRaceRanks) {
+      const {
         distance,
-        ageGroup,
+        age_group: ageGroup,
         gender,
         beginner,
         novice,
         intermediate,
         advanced,
         elite,
-      ] = row;
+      } = record;
+
       const beginnerSeconds = parseClockTimeToSeconds(beginner);
       const noviceSeconds = parseClockTimeToSeconds(novice);
       const intermediateSeconds = parseClockTimeToSeconds(intermediate);
@@ -1009,11 +995,11 @@ const initCalculator = () => {
   return updateCalculator;
 };
 
-const initPage = async () => {
+const initPage = () => {
   const updateCalculator = initCalculator();
   const refreshBenchmarks = initBenchmarks();
 
-  await loadRaceRankData();
+  loadRaceRankData();
 
   updateCalculator();
   refreshBenchmarks();
