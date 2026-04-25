@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-04-25T12:17:13.179Z",
-  "startedAt": "2026-04-25T12:17:13.084Z",
+  "generatedAt": "2026-04-25T18:17:01.999Z",
+  "startedAt": "2026-04-25T18:17:01.197Z",
   "totalProducts": 17,
   "sources": [
     {
@@ -29,7 +29,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/american-football/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/137",
-      "fetchedAt": "2026-04-25T12:17:13.178Z"
+      "fetchedAt": "2026-04-25T18:17:01.998Z"
     },
     {
       "id": "dummyjson:138",
@@ -43,7 +43,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/baseball-ball/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/138",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.998Z"
     },
     {
       "id": "dummyjson:139",
@@ -57,7 +57,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/baseball-glove/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/139",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.998Z"
     },
     {
       "id": "dummyjson:140",
@@ -71,7 +71,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/basketball/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/140",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.998Z"
     },
     {
       "id": "dummyjson:141",
@@ -85,7 +85,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/basketball-rim/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/141",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.998Z"
     },
     {
       "id": "dummyjson:142",
@@ -99,7 +99,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/cricket-ball/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/142",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.998Z"
     },
     {
       "id": "dummyjson:143",
@@ -113,7 +113,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/cricket-bat/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/143",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.998Z"
     },
     {
       "id": "dummyjson:144",
@@ -127,7 +127,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/cricket-helmet/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/144",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.998Z"
     },
     {
       "id": "dummyjson:145",
@@ -141,7 +141,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/cricket-wicket/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/145",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.998Z"
     },
     {
       "id": "dummyjson:146",
@@ -155,7 +155,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/feather-shuttlecock/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/146",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.999Z"
     },
     {
       "id": "dummyjson:147",
@@ -169,7 +169,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/football/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/147",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.999Z"
     },
     {
       "id": "dummyjson:148",
@@ -183,7 +183,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/golf-ball/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/148",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.999Z"
     },
     {
       "id": "dummyjson:149",
@@ -197,7 +197,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/iron-golf/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/149",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.999Z"
     },
     {
       "id": "dummyjson:150",
@@ -211,7 +211,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/metal-baseball-bat/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/150",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.999Z"
     },
     {
       "id": "dummyjson:151",
@@ -225,7 +225,7 @@
       "availability": "In Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/tennis-ball/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/151",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.999Z"
     },
     {
       "id": "dummyjson:152",
@@ -239,7 +239,7 @@
       "availability": "Low Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/tennis-racket/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/152",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.999Z"
     },
     {
       "id": "dummyjson:153",
@@ -253,7 +253,7 @@
       "availability": "Out of Stock",
       "imageUrl": "https://cdn.dummyjson.com/product-images/sports-accessories/volleyball/thumbnail.webp",
       "productUrl": "https://dummyjson.com/products/153",
-      "fetchedAt": "2026-04-25T12:17:13.179Z"
+      "fetchedAt": "2026-04-25T18:17:01.999Z"
     }
   ]
 }
