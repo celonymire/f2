@@ -161,77 +161,24 @@ import Navbar from "../components/Navbar.astro";
           gender. Select a distance to view benchmark times.
         </p>
 
-        <div class="benchmark-controls">
-          <label>
-            View
-            <select id="benchmark-view" aria-label="Benchmark view">
-              <option value="chart" selected>Chart</option>
-              <option value="table">Table</option>
-            </select>
-          </label>
-          <label>
-            Distance
-            <select id="benchmark-distance" aria-label="Benchmark distance">
-              <option value="5k" selected>5K</option>
-              <option value="10k">10K</option>
-              <option value="half-marathon">Half Marathon</option>
-              <option value="marathon">Marathon</option>
-            </select>
-          </label>
-          <label>
-            Rank
-            <select id="benchmark-rank" aria-label="Benchmark rank">
-              <option value="all" selected>All ranks</option>
-              <option value="beginner">Beginner</option>
-              <option value="novice">Novice</option>
-              <option value="intermediate">Intermediate</option>
-              <option value="advanced">Advanced</option>
-              <option value="elite">Elite</option>
-            </select>
-          </label>
-          <label>
-            Gender display
-            <select id="benchmark-gender" aria-label="Benchmark gender">
-              <option value="all" selected>All</option>
-              <option value="male">Men only</option>
-              <option value="female">Women only</option>
-            </select>
-          </label>
-        </div>
-
         <div id="benchmark-chart-wrap" class="benchmark-chart-wrap">
           <p id="benchmark-chart-summary" class="benchmark-chart-summary"></p>
           <div class="benchmark-chart-scroller">
-            <canvas
+            <div
               id="benchmark-chart"
               class="benchmark-chart"
-              width="720"
-              height="360"
               role="img"
-              aria-label="Benchmark pace chart by age"></canvas>
+              aria-label="Benchmark pace chart by age"
+            >
+            </div>
           </div>
-        </div>
-
-        <div id="benchmark-table-wrap" class="benchmark-table-wrap" hidden>
-          <table class="benchmark-table" aria-describedby="benchmark-note">
-            <caption id="benchmark-caption">
-              Average finish times by age group and gender
-            </caption>
-            <thead>
-              <tr>
-                <th scope="col">Age Group</th>
-                <th scope="col">Men</th>
-                <th scope="col">Women</th>
-              </tr>
-            </thead>
-            <tbody id="benchmark-body"></tbody>
-          </table>
         </div>
 
         <p id="benchmark-note" class="benchmark-note">
           Source: RunningLevel running standards by age and ability, retrieved
-          April 17, 2026. Select rank, distance, and gender to compare pace
-          times by group; values may vary by event, region, and year.
+          April 17, 2026. Use the native Vega filter controls to compare pace
+          times by distance, rank, age group, and gender; values may vary by
+          event, region, and year.
         </p>
       </section>
 

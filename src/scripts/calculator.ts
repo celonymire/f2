@@ -1,8 +1,6 @@
-import { Chart, registerables, type ChartDataset } from "chart.js";
+import vegaEmbed from "vega-embed";
 import raceRanks from "../data/race-ranks.json";
 import { RaceRanksSchema } from "../data/schemas";
-
-Chart.register(...registerables);
 
 type RankThresholds = {
   beginner: number;
@@ -131,6 +129,13 @@ const benchmarkRankOrder: RankLevel[] = [
   "intermediate",
   "advanced",
   "elite",
+];
+
+const benchmarkDistanceOrder: Distance[] = [
+  "5k",
+  "10k",
+  "half-marathon",
+  "marathon",
 ];
 
 const pad = (value: number) =>
@@ -339,534 +344,198 @@ const loadRaceRankData = () => {
 };
 
 const initBenchmarks = () => {
-  const benchmarkView = document.getElementById(
-    "benchmark-view",
-  )! as HTMLSelectElement;
-  const distanceSelect = document.getElementById(
-    "benchmark-distance",
-  )! as HTMLSelectElement;
-  const rankSelect = document.getElementById(
-    "benchmark-rank",
-  )! as HTMLSelectElement;
-  const genderFilter = document.getElementById(
-    "benchmark-gender",
-  )! as HTMLSelectElement;
-  const benchmarkChartWrap = document.getElementById(
-    "benchmark-chart-wrap",
-  )! as HTMLElement;
   const benchmarkChart = document.getElementById(
     "benchmark-chart",
-  )! as HTMLCanvasElement;
+  )! as HTMLDivElement;
   const benchmarkChartSummary = document.getElementById(
     "benchmark-chart-summary",
   )! as HTMLElement;
-  const benchmarkTableWrap = document.getElementById(
-    "benchmark-table-wrap",
-  )! as HTMLElement;
-  const benchmarkBody = document.getElementById(
-    "benchmark-body",
-  )! as HTMLTableSectionElement;
-  const benchmarkCaption = document.getElementById(
-    "benchmark-caption",
-  )! as HTMLTableCaptionElement;
-  const benchmarkTable = benchmarkBody.closest("table")! as HTMLTableElement;
-  const benchmarkHeadRow = benchmarkTable.querySelector(
-    "thead tr",
-  )! as HTMLTableRowElement;
-
-  type ChartSeries = {
-    label: string;
-    color: string;
-    valuesByAge: Map<string, number>;
-    criticalByAge: Map<string, string>;
-  };
-
-  type BenchmarkDataset = ChartDataset<"line", (number | null)[]> & {
-    benchmarkMeta: {
-      criticalByIndex: Map<number, string>;
-    };
-  };
-
-  let benchmarkChartInstance: Chart<"line", (number | null)[], string> | null =
-    null;
-
-  const chartPalette = [
-    "#2563eb",
-    "#dc2626",
-    "#16a34a",
-    "#9333ea",
-    "#ea580c",
-    "#0891b2",
-    "#be123c",
-    "#4f46e5",
-    "#15803d",
-    "#0f766e",
-  ];
 
   const renderChartMessage = (message: string) => {
     benchmarkChartSummary.textContent = message;
-
-    if (benchmarkChartInstance) {
-      benchmarkChartInstance.destroy();
-      benchmarkChartInstance = null;
-    }
+    benchmarkChart.innerHTML = "";
   };
 
-  const updateBenchmarkView = () => {
-    const showChart = benchmarkView.value === "chart";
-    benchmarkChartWrap.hidden = !showChart;
-    benchmarkTableWrap.hidden = showChart;
-  };
-
-  const createChartSeries = (
-    distanceKey: Distance,
-    rankLevels: RankLevel[],
-    selectedRank: string,
-    selectedGender: string,
+  const createChartData = (
     sortedAgeGroups: string[],
-  ): ChartSeries[] => {
-    const genders: Gender[] =
-      selectedGender === "male" || selectedGender === "female"
-        ? [selectedGender]
-        : ["male", "female"];
+  ): {
+    age: string;
+    distance: string;
+    time: number;
+    rank: string;
+    gender: string;
+    label: string;
+  }[] => {
+    const data: {
+      age: string;
+      distance: string;
+      time: number;
+      rank: string;
+      gender: string;
+      label: string;
+    }[] = [];
 
-    return rankLevels
-      .flatMap((rankLevel, rankIndex) =>
-        genders.map((gender, genderIndex) => {
-          const points = sortedAgeGroups
-            .map((ageGroup) => {
-              const timeValue = raceRankDisplayTimes.get(
-                buildRaceRankDisplayKey(
-                  distanceKey,
-                  ageGroup,
-                  gender,
-                  rankLevel,
-                ),
-              );
-              const seconds = timeValue
-                ? parseClockTimeToSeconds(timeValue)
-                : null;
+    const genders: Gender[] = ["male", "female"];
 
-              if (seconds === null) {
-                return null;
-              }
+    benchmarkDistanceOrder.forEach((distanceKey) => {
+      const distanceLabel = distanceLabels[distanceKey];
 
-              return {
-                ageGroup,
-                seconds,
-              };
-            })
-            .filter(
-              (point): point is { ageGroup: string; seconds: number } =>
-                point !== null,
+      benchmarkRankOrder.forEach((rankLevel) => {
+        genders.forEach((gender) => {
+          const genderLabel = gender === "male" ? "Men" : "Women";
+
+          sortedAgeGroups.forEach((ageGroup) => {
+            const timeValue = raceRankDisplayTimes.get(
+              buildRaceRankDisplayKey(distanceKey, ageGroup, gender, rankLevel),
             );
+            const seconds = timeValue
+              ? parseClockTimeToSeconds(timeValue)
+              : null;
 
-          if (points.length === 0) {
-            return null;
-          }
-
-          let fastestPoint = points[0];
-          let slowestPoint = points[0];
-
-          for (const point of points) {
-            if (point.seconds < fastestPoint.seconds) {
-              fastestPoint = point;
+            if (seconds !== null) {
+              data.push({
+                age: ageGroup,
+                distance: distanceLabel,
+                time: seconds,
+                rank: formatRankLabel(rankLevel),
+                gender: genderLabel,
+                label: `${distanceLabel} ${formatRankLabel(rankLevel)} ${genderLabel}`,
+              });
             }
-
-            if (point.seconds > slowestPoint.seconds) {
-              slowestPoint = point;
-            }
-          }
-
-          const valuesByAge = new Map(
-            points.map((point) => [point.ageGroup, point.seconds]),
-          );
-          const criticalByAge = new Map<string, string>();
-
-          criticalByAge.set(fastestPoint.ageGroup, "Critical: fastest");
-
-          if (slowestPoint.ageGroup === fastestPoint.ageGroup) {
-            criticalByAge.set(
-              slowestPoint.ageGroup,
-              "Critical: fastest and slowest",
-            );
-          } else {
-            criticalByAge.set(slowestPoint.ageGroup, "Critical: slowest");
-          }
-
-          const label =
-            selectedRank === "all" && selectedGender === "all"
-              ? `${formatRankLabel(rankLevel)} ${gender === "male" ? "Men" : "Women"}`
-              : selectedRank === "all"
-                ? formatRankLabel(rankLevel)
-                : selectedGender === "all"
-                  ? gender === "male"
-                    ? "Men"
-                    : "Women"
-                  : formatRankLabel(rankLevel);
-
-          const colorIndex = rankIndex * 2 + genderIndex;
-
-          return {
-            label,
-            color: chartPalette[colorIndex % chartPalette.length],
-            valuesByAge,
-            criticalByAge,
-          };
-        }),
-      )
-      .filter((series): series is ChartSeries => series !== null);
-  };
-
-  const renderBenchmarkChart = (
-    distanceKey: Distance,
-    rankLevels: RankLevel[],
-    selectedRank: string,
-    selectedGender: string,
-    sortedAgeGroups: string[],
-    captionText: string,
-  ) => {
-    const series = createChartSeries(
-      distanceKey,
-      rankLevels,
-      selectedRank,
-      selectedGender,
-      sortedAgeGroups,
-    );
-
-    if (series.length === 0) {
-      renderChartMessage("No chart data found for this selection.");
-      return;
-    }
-
-    const visibleAges = sortedAgeGroups.filter((ageGroup) =>
-      series.some((entry) => entry.valuesByAge.has(ageGroup)),
-    );
-
-    if (visibleAges.length === 0) {
-      renderChartMessage("No chart data found for this selection.");
-      return;
-    }
-
-    if (benchmarkChartInstance) {
-      benchmarkChartInstance.destroy();
-    }
-
-    const datasets = series.map((entry): BenchmarkDataset => {
-      const data = visibleAges.map(
-        (ageGroup) => entry.valuesByAge.get(ageGroup) ?? null,
-      );
-      const criticalByIndex = new Map<number, string>();
-
-      visibleAges.forEach((ageGroup, index) => {
-        const criticalLabel = entry.criticalByAge.get(ageGroup);
-
-        if (criticalLabel) {
-          criticalByIndex.set(index, criticalLabel);
-        }
+          });
+        });
       });
-
-      return {
-        label: entry.label,
-        data,
-        borderColor: entry.color,
-        backgroundColor: entry.color,
-        tension: 0.25,
-        spanGaps: true,
-        pointHoverRadius: 6,
-        pointRadius: (context) => {
-          const dataset = context.dataset as BenchmarkDataset;
-          return dataset.benchmarkMeta.criticalByIndex.has(context.dataIndex)
-            ? 5
-            : 3;
-        },
-        benchmarkMeta: {
-          criticalByIndex,
-        },
-      };
     });
 
-    benchmarkChartInstance = new Chart<"line", (number | null)[], string>(
-      benchmarkChart,
-      {
-        type: "line",
-        data: {
-          labels: visibleAges,
-          datasets,
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: true,
-          aspectRatio: 2,
-          interaction: {
-            mode: "nearest",
-            intersect: false,
-          },
-          plugins: {
-            legend: {
-              position: "bottom",
-            },
-            tooltip: {
-              callbacks: {
-                title: (items) => {
-                  const ageGroup = items[0]?.label;
-                  return ageGroup ? `Age Group: ${ageGroup}` : "Age Group";
-                },
-                label: (context) => {
-                  const seconds = context.parsed.y;
+    return data;
+  };
 
-                  if (typeof seconds !== "number") {
-                    return `${context.dataset.label}: N/A`;
-                  }
+  const renderBenchmarkChart = (sortedAgeGroups: string[]) => {
+    const data = createChartData(sortedAgeGroups);
 
-                  return `${context.dataset.label}: ${formatTime(seconds)}`;
-                },
-                afterLabel: (context) => {
-                  const dataset = context.dataset as BenchmarkDataset;
-                  return (
-                    dataset.benchmarkMeta.criticalByIndex.get(
-                      context.dataIndex,
-                    ) ?? ""
-                  );
-                },
-              },
-            },
-          },
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: "Age Group",
-              },
-            },
-            y: {
-              title: {
-                display: true,
-                text: "Finish Time",
-              },
-              ticks: {
-                callback: (value) => formatTime(Number(value)),
-              },
-            },
+    if (data.length === 0) {
+      renderChartMessage("No chart data found for this selection.");
+      return;
+    }
+
+    const spec = {
+      $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+      data: { values: data },
+      params: [
+        {
+          name: "selectedDistance",
+          value: "5K",
+          bind: {
+            input: "select",
+            options: ["All", "5K", "10K", "Half Marathon", "Marathon"],
+            name: "Distance: ",
           },
         },
+        {
+          name: "selectedRank",
+          value: "All",
+          bind: {
+            input: "select",
+            options: [
+              "All",
+              "Beginner",
+              "Novice",
+              "Intermediate",
+              "Advanced",
+              "Elite",
+            ],
+            name: "Rank: ",
+          },
+        },
+        {
+          name: "selectedGender",
+          value: "All",
+          bind: {
+            input: "select",
+            options: ["All", "Men", "Women"],
+            name: "Gender: ",
+          },
+        },
+      ],
+      transform: [
+        {
+          filter:
+            "selectedDistance === 'All' || datum.distance === selectedDistance",
+        },
+        { filter: "selectedRank === 'All' || datum.rank === selectedRank" },
+        {
+          filter: "selectedGender === 'All' || datum.gender === selectedGender",
+        },
+        {
+          calculate:
+            "format(floor(datum.time / 3600), '02d') + ':' + format(floor((datum.time % 3600) / 60), '02d') + ':' + format(floor(datum.time % 60), '02d')",
+          as: "timeLabel",
+        },
+      ],
+      mark: { type: "line" as const, point: true },
+      encoding: {
+        x: { field: "age", type: "ordinal", title: "Age Group" },
+        y: {
+          field: "time",
+          type: "quantitative",
+          title: "Finish Time",
+          axis: {
+            labelExpr:
+              "format(floor(datum.value / 3600), '02d') + ':' + format(floor((datum.value % 3600) / 60), '02d') + ':' + format(floor(datum.value % 60), '02d')",
+          },
+        },
+        color: { field: "label", type: "nominal", title: "Series" },
+        tooltip: [
+          { field: "distance", title: "Distance" },
+          { field: "age", title: "Age Group" },
+          { field: "timeLabel", title: "Time" },
+          { field: "rank", title: "Rank" },
+          { field: "gender", title: "Gender" },
+        ],
       },
-    );
+      width: 700,
+      height: 350,
+    };
 
-    benchmarkChartSummary.textContent = `${captionText}. Hover points for details; lower times are faster.`;
+    vegaEmbed(benchmarkChart, spec as any, { actions: false })
+      .then(() => {
+        benchmarkChartSummary.textContent =
+          "Use the native chart controls to filter distance, rank, and gender. Hover points for details; lower times are faster.";
+      })
+      .catch((error) => {
+        console.error("Vega-Lite error:", error);
+        renderChartMessage("Error rendering chart.");
+      });
   };
 
-  const setBenchmarkHeader = (columns: string[]) => {
-    benchmarkHeadRow.innerHTML = columns
-      .map((column) => `<th scope="col">${column}</th>`)
-      .join("");
-  };
-
-  const renderBenchmarkMessageRow = (message: string, columnCount: number) => {
-    benchmarkBody.innerHTML = `<tr><td colspan="${columnCount}">${message}</td></tr>`;
-  };
-
-  const renderBenchmarkRows = () => {
-    updateBenchmarkView();
-
-    const selectedDistance = distanceSelect.value;
-    const selectedRank = rankSelect.value;
-    const selectedGender = genderFilter.value;
-    const showRankColumn = selectedRank === "all";
-    const singleGender =
-      selectedGender === "male" || selectedGender === "female";
-    const benchmarkColumns = singleGender
-      ? [
-          "Age Group",
-          ...(showRankColumn
-            ? benchmarkRankOrder.map((rankLevel) => formatRankLabel(rankLevel))
-            : [selectedGender === "male" ? "Men" : "Women"]),
-        ]
-      : [...(showRankColumn ? ["Rank"] : []), "Age Group", "Men", "Women"];
-    const columnCount = benchmarkColumns.length;
-
-    setBenchmarkHeader(benchmarkColumns);
-
+  const renderBenchmarks = () => {
     if (raceRankDataFailed) {
-      benchmarkCaption.textContent = "Race rank benchmark data unavailable";
-      renderBenchmarkMessageRow("Unable to load benchmark data.", columnCount);
       renderChartMessage("Unable to load benchmark data.");
       return;
     }
 
     if (!raceRankDataLoaded) {
-      benchmarkCaption.textContent = "Loading benchmark data...";
-      renderBenchmarkMessageRow("Loading benchmark data...", columnCount);
       renderChartMessage("Loading benchmark data...");
       return;
     }
-
-    const distanceKeys: Distance[] = [selectedDistance as Distance];
-    const rankLevels: RankLevel[] =
-      selectedRank === "all" ? benchmarkRankOrder : [selectedRank as RankLevel];
-
-    if (
-      distanceKeys.some((distanceKey) => !distanceLabels[distanceKey]) ||
-      rankLevels.length === 0
-    ) {
-      benchmarkCaption.textContent = "Pace times by age group";
-      renderBenchmarkMessageRow("Select supported filters.", columnCount);
-      renderChartMessage("Select supported filters.");
-      return;
-    }
-
-    const distanceText = distanceLabels[selectedDistance as Distance];
-    const rankText =
-      selectedRank === "all"
-        ? "all ranks"
-        : `${formatRankLabel(selectedRank as RankLevel)} rank`;
-    const genderText =
-      selectedGender === "male"
-        ? "men"
-        : selectedGender === "female"
-          ? "women"
-          : "men and women";
-    benchmarkCaption.textContent = `${distanceText}, ${rankText} pace times by age group (${genderText})`;
 
     const sortedAgeGroups = Array.from(raceRankAgeGroups).sort(
       (first, second) =>
         Number.parseInt(first, 10) - Number.parseInt(second, 10),
     );
 
-    const rows =
-      singleGender && selectedRank === "all"
-        ? distanceKeys
-            .flatMap((distanceKey) =>
-              sortedAgeGroups
-                .map((ageGroup) => {
-                  const gender = selectedGender as Gender;
-                  const rankCells = benchmarkRankOrder.map(
-                    (rankLevel) =>
-                      raceRankDisplayTimes.get(
-                        buildRaceRankDisplayKey(
-                          distanceKey,
-                          ageGroup,
-                          gender,
-                          rankLevel,
-                        ),
-                      ) ?? "N/A",
-                  );
-
-                  if (rankCells.every((value) => value === "N/A")) {
-                    return "";
-                  }
-
-                  const rankCellsMarkup = rankCells
-                    .map((value) => `<td>${value}</td>`)
-                    .join("");
-
-                  return `<tr>
-                        <th scope="row">${ageGroup}</th>
-                        ${rankCellsMarkup}
-                      </tr>`;
-                })
-                .filter((row) => row.length > 0),
-            )
-            .join("")
-        : distanceKeys
-            .flatMap((distanceKey) =>
-              rankLevels.flatMap((rankLevel) =>
-                sortedAgeGroups
-                  .map((ageGroup) => {
-                    const male = raceRankDisplayTimes.get(
-                      buildRaceRankDisplayKey(
-                        distanceKey,
-                        ageGroup,
-                        "male",
-                        rankLevel,
-                      ),
-                    );
-                    const female = raceRankDisplayTimes.get(
-                      buildRaceRankDisplayKey(
-                        distanceKey,
-                        ageGroup,
-                        "female",
-                        rankLevel,
-                      ),
-                    );
-
-                    if (!male && !female) {
-                      return "";
-                    }
-
-                    const rankCell = showRankColumn
-                      ? `<td>${formatRankLabel(rankLevel)}</td>`
-                      : "";
-
-                    if (singleGender) {
-                      const selectedValue =
-                        selectedGender === "male" ? male : female;
-
-                      if (!selectedValue) {
-                        return "";
-                      }
-
-                      return `<tr>
-                            ${rankCell}
-                            <th scope="row">${ageGroup}</th>
-                            <td>${selectedValue}</td>
-                          </tr>`;
-                    }
-
-                    return `<tr>
-                          ${rankCell}
-                          <th scope="row">${ageGroup}</th>
-                          <td>${male ?? "N/A"}</td>
-                          <td>${female ?? "N/A"}</td>
-                        </tr>`;
-                  })
-                  .filter((row) => row.length > 0),
-              ),
-            )
-            .join("");
-
-    if (!rows) {
-      renderBenchmarkMessageRow(
-        "No benchmark rows found for this selection.",
-        columnCount,
-      );
-      renderChartMessage("No benchmark rows found for this selection.");
+    if (sortedAgeGroups.length === 0) {
+      renderChartMessage("No chart data found for this selection.");
       return;
     }
 
-    benchmarkBody.innerHTML = rows;
-
-    renderBenchmarkChart(
-      distanceKeys[0],
-      rankLevels,
-      selectedRank,
-      selectedGender,
-      sortedAgeGroups,
-      benchmarkCaption.textContent,
-    );
-
-    updateBenchmarkView();
+    renderBenchmarkChart(sortedAgeGroups);
   };
 
-  benchmarkView.addEventListener("change", () => {
-    updateBenchmarkView();
-    renderBenchmarkRows();
-  });
-  distanceSelect.addEventListener("change", () => {
-    renderBenchmarkRows();
-  });
-  rankSelect.addEventListener("change", () => {
-    renderBenchmarkRows();
-  });
-  genderFilter.addEventListener("change", () => {
-    renderBenchmarkRows();
-  });
-
-  updateBenchmarkView();
-  renderBenchmarkRows();
+  renderBenchmarks();
 
   return () => {
-    renderBenchmarkRows();
+    renderBenchmarks();
   };
 };
 
