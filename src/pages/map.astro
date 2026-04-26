@@ -1,45 +1,191 @@
 ---
 import Navbar from "../components/Navbar.astro";
-
+import PaceCalculator from "../components/PaceCalculator.astro";
+const baseUrl = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
+    <link rel="icon" type="image/svg+xml" href={`${baseUrl}favicon.svg`} />
+    <link rel="icon" href={`${baseUrl}favicon.ico`} />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>Route Planning</title>
+    <title>Route Planner</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.7.3/dist/maplibre-gl.css"
+    />
   </head>
   <body>
     <header>
-      <h1>Route Planning Page</h1>
+      <h1>Route Planning</h1>
       <Navbar />
     </header>
 
     <main>
-      <section>
-        <h2>Plan a Route</h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas
-          faucibus mollis interdum. Donec sed odio dui.
-        </p>
-        <p>
-          Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-          Vestibulum id ligula porta felis euismod semper.
-        </p>
+      <section class="planner-layout">
+        <div class="map-frame">
+          <div
+            id="planner-map"
+            class="planner-map"
+            role="application"
+            aria-label="Interactive route planning map"
+          >
+          </div>
+          <div class="map-overlay" aria-label="Route creation controls">
+            <button id="planner-add-mode" type="button">Add Points: On</button>
+            <button id="planner-undo-waypoint" type="button">Undo Point</button>
+            <button id="planner-clear-route" type="button">Clear Route</button>
+          </div>
+        </div>
+
+        <div class="planner-controls">
+          <section>
+            <h2>Location</h2>
+            <div class="control-row">
+              <button id="planner-use-location" type="button">
+                Use My Location
+              </button>
+            </div>
+          </section>
+
+          <section>
+            <h2>Routing API</h2>
+            <div class="control-grid">
+              <label>
+                openrouteservice API key
+                <input
+                  id="planner-api-key"
+                  type="password"
+                  autocomplete="off"
+                  placeholder="Paste your key"
+                />
+              </label>
+              <button id="planner-save-api-key" type="button">Save Key</button>
+            </div>
+          </section>
+
+          <section>
+            <h2>Search</h2>
+            <div class="control-grid">
+              <label>
+                Place search
+                <input
+                  id="planner-search-query"
+                  type="search"
+                  placeholder="City, neighborhood, or trail"
+                />
+              </label>
+              <button id="planner-search-button" type="button">Focus Map</button
+              >
+            </div>
+          </section>
+
+          <section>
+            <h2>Route Settings</h2>
+            <div class="control-grid">
+              <label>
+                Route name
+                <input
+                  id="planner-route-name"
+                  type="text"
+                  value="Route 1"
+                  maxlength="60"
+                />
+              </label>
+              <label>
+                Route profile
+                <select id="planner-profile">
+                  <option value="foot-walking">Road + Urban Paths</option>
+                  <option value="foot-hiking">Trails + Terrain Paths</option>
+                </select>
+              </label>
+              <button id="planner-save-route" type="button">Save Route</button>
+              <button id="planner-new-route" type="button">New Route</button>
+            </div>
+          </section>
+
+          <section>
+            <h2>Saved Routes</h2>
+            <div class="control-grid">
+              <select id="planner-route-list" size="6"></select>
+              <button id="planner-load-route" type="button">
+                Load Selected Route
+              </button>
+              <button id="planner-delete-route" type="button">
+                Delete Selected
+              </button>
+            </div>
+          </section>
+
+          <section>
+            <h2>Import / Export</h2>
+            <div class="control-row">
+              <button id="planner-export-routes" type="button">
+                Export JSON
+              </button>
+              <button id="planner-import-routes" type="button"
+                >Import JSON</button
+              >
+              <input
+                id="planner-import-file"
+                type="file"
+                accept="application/json"
+                hidden
+              />
+            </div>
+          </section>
+
+          <section>
+            <h2>Route Summary</h2>
+            <p
+              id="planner-routing-indicator"
+              class="planner-routing-indicator"
+              role="status"
+              aria-live="polite"
+              hidden
+            >
+              <span class="planner-routing-dot" aria-hidden="true"></span>
+              Fetching snapped route...
+            </p>
+            <dl class="planner-summary">
+              <div>
+                <dt>Waypoints</dt>
+                <dd id="planner-waypoint-count">0</dd>
+              </div>
+              <div>
+                <dt>Distance</dt>
+                <dd id="planner-distance">0.00 km</dd>
+              </div>
+              <div>
+                <dt>Estimated Duration</dt>
+                <dd id="planner-duration">00:00:00</dd>
+              </div>
+            </dl>
+            <button id="planner-send-distance" type="button">
+              Send Distance to Calculator
+            </button>
+          </section>
+
+          <p id="planner-status" class="planner-status" role="status">
+            Loading planner...
+          </p>
+        </div>
       </section>
 
-      <section>
-        <h2>Stops</h2>
-        <ol>
-          <li>Lorem stop one, consectetur.</li>
-          <li>Ipsum stop two, adipiscing.</li>
-          <li>Dolor stop three, facilisis.</li>
-        </ol>
-      </section>
+      <PaceCalculator
+        title="Pace Calculator"
+        description="Use your route distance or enter a custom distance, then set your time to calculate pace and rank."
+      />
     </main>
+
+    <script src="https://unpkg.com/maplibre-gl@5.7.3/dist/maplibre-gl.js"
+    ></script>
+    <script src="../scripts/calculator.ts"></script>
+    <script src="../scripts/map.ts"></script>
 
     <style>
       body {
@@ -61,7 +207,167 @@ import Navbar from "../components/Navbar.astro";
 
       main {
         display: grid;
-        gap: 1.25rem;
+        gap: 1.5rem;
+      }
+
+      .planner-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(21rem, 1fr);
+        gap: 1rem;
+      }
+
+      .map-frame {
+        position: relative;
+        min-height: 36rem;
+      }
+
+      .planner-map {
+        width: 100%;
+        height: 100%;
+        min-height: 36rem;
+      }
+
+      .map-overlay {
+        position: absolute;
+        top: 0.75rem;
+        left: 0.75rem;
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        z-index: 2;
+      }
+
+      .planner-controls {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .planner-controls section {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .planner-controls h2 {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .control-row {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .control-grid {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      label {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      input,
+      select,
+      button {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.5rem;
+      }
+
+      button {
+        width: auto;
+      }
+
+      .planner-summary {
+        display: grid;
+        gap: 0.5rem;
+        margin: 0;
+      }
+
+      .planner-summary div {
+        display: grid;
+        gap: 0.2rem;
+      }
+
+      .planner-summary dt {
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+
+      .planner-summary dd {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 700;
+      }
+
+      .planner-status {
+        margin: 0;
+        font-size: 0.95rem;
+      }
+
+      .planner-routing-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #0a84ff;
+      }
+
+      .planner-routing-indicator[hidden] {
+        display: none;
+      }
+
+      .planner-routing-dot {
+        width: 0.75rem;
+        height: 0.75rem;
+        border-radius: 999px;
+        background: currentColor;
+        animation: planner-pulse 1s ease-in-out infinite;
+      }
+
+      @keyframes planner-pulse {
+        0%,
+        100% {
+          transform: scale(0.75);
+          opacity: 0.5;
+        }
+
+        50% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      :global(.waypoint-marker) {
+        border: 0;
+        border-radius: 999px;
+        width: 1.75rem;
+        height: 1.75rem;
+        font-weight: 700;
+        color: #fff;
+        background: #0a84ff;
+        cursor: pointer;
+      }
+
+      @media (max-width: 1100px) {
+        .planner-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .map-overlay {
+          right: 0.75rem;
+          left: 0.75rem;
+        }
+
+        .map-overlay button {
+          flex: 1 1 auto;
+        }
       }
     </style>
   </body>

@@ -1,6 +1,11 @@
 import vegaEmbed, { type VisualizationSpec } from "vega-embed";
 import raceRanks from "../data/race-ranks.json";
 import {
+  clearStoredRouteDistance,
+  readStoredRouteDistance,
+  ROUTE_DISTANCE_EVENT,
+} from "./route-distance-transfer";
+import {
   RaceDistanceSchema,
   RaceRankLevelSchema,
   RaceRanksSchema,
@@ -31,6 +36,11 @@ type BenchmarkChartDatum = {
   rank: string;
   gender: string;
   label: string;
+};
+
+type CalculatorController = {
+  update: () => void;
+  setDistanceMeters: (distanceMeters: number) => void;
 };
 
 const raceRankThresholds = new Map<string, RankThresholds>();
@@ -281,6 +291,10 @@ const classifyRaceRank = (
 };
 
 const loadRaceRankData = (): void => {
+  if (raceRankDataLoaded || raceRankDataFailed) {
+    return;
+  }
+
   try {
     const validatedRaceRanks = RaceRanksSchema.parse(raceRanks);
 
@@ -348,13 +362,19 @@ const loadRaceRankData = (): void => {
   }
 };
 
-const initBenchmarks = (): (() => void) => {
-  const benchmarkChart = document.getElementById(
-    "benchmark-chart",
-  )! as HTMLDivElement;
+const initBenchmarks = (): (() => void) | null => {
+  const benchmarkChart = document.getElementById("benchmark-chart");
   const benchmarkChartSummary = document.getElementById(
     "benchmark-chart-summary",
-  )! as HTMLElement;
+  );
+
+  if (!(benchmarkChart instanceof HTMLDivElement)) {
+    return null;
+  }
+
+  if (!(benchmarkChartSummary instanceof HTMLElement)) {
+    return null;
+  }
 
   const renderChartMessage = (message: string): void => {
     benchmarkChartSummary.textContent = message;
@@ -365,7 +385,6 @@ const initBenchmarks = (): (() => void) => {
     sortedAgeGroups: string[],
   ): BenchmarkChartDatum[] => {
     const data: BenchmarkChartDatum[] = [];
-
     const genders: Gender[] = ["male", "female"];
 
     benchmarkDistanceOrder.forEach((distanceKey) => {
@@ -530,35 +549,40 @@ const initBenchmarks = (): (() => void) => {
   };
 };
 
-const initCalculator = (): (() => void) => {
-  const distancePresetInput = document.getElementById(
-    "distance-presets",
-  )! as HTMLSelectElement;
-  const customDistanceField = document.getElementById(
-    "custom-distance-field",
-  )! as HTMLElement;
-  const distanceInput = document.getElementById(
-    "distance",
-  )! as HTMLInputElement;
-  const hoursInput = document.getElementById("hours")! as HTMLInputElement;
-  const minutesInput = document.getElementById("minutes")! as HTMLInputElement;
-  const secondsInput = document.getElementById("seconds")! as HTMLInputElement;
-  const genderInput = document.getElementById("gender")! as HTMLSelectElement;
-  const ageGroupInput = document.getElementById(
-    "age-group",
-  )! as HTMLSelectElement;
-  const pacePerMileOutput = document.getElementById(
-    "pace-per-mile",
-  )! as HTMLElement;
-  const pacePerKilometerOutput = document.getElementById(
-    "pace-per-kilometer",
-  )! as HTMLElement;
-  const formattedTimeOutput = document.getElementById(
-    "formatted-time",
-  )! as HTMLElement;
-  const raceRankOutput = document.getElementById("race-rank")! as HTMLElement;
-  const vdotScoreOutput = document.getElementById("vdot-score")! as HTMLElement;
-  const vdotLevelOutput = document.getElementById("vdot-level")! as HTMLElement;
+const initCalculator = (): CalculatorController | null => {
+  const distancePresetInput = document.getElementById("distance-presets");
+  const customDistanceField = document.getElementById("custom-distance-field");
+  const distanceInput = document.getElementById("distance");
+  const hoursInput = document.getElementById("hours");
+  const minutesInput = document.getElementById("minutes");
+  const secondsInput = document.getElementById("seconds");
+  const genderInput = document.getElementById("gender");
+  const ageGroupInput = document.getElementById("age-group");
+  const pacePerMileOutput = document.getElementById("pace-per-mile");
+  const pacePerKilometerOutput = document.getElementById("pace-per-kilometer");
+  const formattedTimeOutput = document.getElementById("formatted-time");
+  const raceRankOutput = document.getElementById("race-rank");
+  const vdotScoreOutput = document.getElementById("vdot-score");
+  const vdotLevelOutput = document.getElementById("vdot-level");
+
+  if (
+    !(distancePresetInput instanceof HTMLSelectElement) ||
+    !(customDistanceField instanceof HTMLElement) ||
+    !(distanceInput instanceof HTMLInputElement) ||
+    !(hoursInput instanceof HTMLInputElement) ||
+    !(minutesInput instanceof HTMLInputElement) ||
+    !(secondsInput instanceof HTMLInputElement) ||
+    !(genderInput instanceof HTMLSelectElement) ||
+    !(ageGroupInput instanceof HTMLSelectElement) ||
+    !(pacePerMileOutput instanceof HTMLElement) ||
+    !(pacePerKilometerOutput instanceof HTMLElement) ||
+    !(formattedTimeOutput instanceof HTMLElement) ||
+    !(raceRankOutput instanceof HTMLElement) ||
+    !(vdotScoreOutput instanceof HTMLElement) ||
+    !(vdotLevelOutput instanceof HTMLElement)
+  ) {
+    return null;
+  }
 
   const updateCalculator = (): void => {
     const usingCustomDistance = distancePresetInput.value === "custom";
@@ -641,8 +665,19 @@ const initCalculator = (): (() => void) => {
     raceRankOutput.textContent = classifyRaceRank(totalSeconds, thresholds);
   };
 
-  distancePresetInput.addEventListener("change", updateCalculator);
+  const setDistanceMeters = (distanceMeters: number): void => {
+    if (!Number.isFinite(distanceMeters) || distanceMeters <= 0) {
+      return;
+    }
 
+    distancePresetInput.value = "custom";
+    distanceInput.value = distanceMeters.toFixed(1);
+    customDistanceField.hidden = false;
+    distanceInput.disabled = false;
+    updateCalculator();
+  };
+
+  distancePresetInput.addEventListener("change", updateCalculator);
   [distanceInput, hoursInput, minutesInput, secondsInput].forEach((input) => {
     input.addEventListener("input", updateCalculator);
   });
@@ -652,17 +687,32 @@ const initCalculator = (): (() => void) => {
 
   updateCalculator();
 
-  return updateCalculator;
+  return { update: updateCalculator, setDistanceMeters };
 };
 
 const initPage = (): void => {
-  const updateCalculator = initCalculator();
-  const refreshBenchmarks = initBenchmarks();
-
   loadRaceRankData();
 
-  updateCalculator();
-  refreshBenchmarks();
+  const calculator = initCalculator();
+  const refreshBenchmarks = initBenchmarks();
+
+  if (calculator !== null) {
+    const storedDistance = readStoredRouteDistance();
+
+    if (storedDistance !== null) {
+      calculator.setDistanceMeters(storedDistance);
+      clearStoredRouteDistance();
+    }
+
+    window.addEventListener(ROUTE_DISTANCE_EVENT, (event) => {
+      const customEvent = event as CustomEvent<{ distanceMeters: number }>;
+      calculator.setDistanceMeters(customEvent.detail.distanceMeters);
+    });
+
+    calculator.update();
+  }
+
+  refreshBenchmarks?.();
 };
 
 void initPage();
