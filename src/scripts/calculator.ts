@@ -1,4 +1,4 @@
-import vegaEmbed from "vega-embed";
+import vegaEmbed, { type VisualizationSpec } from "vega-embed";
 import raceRanks from "../data/race-ranks.json";
 import { RaceRanksSchema } from "../data/schemas";
 
@@ -22,6 +22,15 @@ type VdotLevel = {
 type Gender = "male" | "female";
 
 type Distance = "5k" | "10k" | "half-marathon" | "marathon";
+
+type BenchmarkChartDatum = {
+  age: string;
+  distance: string;
+  time: number;
+  rank: string;
+  gender: string;
+  label: string;
+};
 
 const raceRankThresholds = new Map<string, RankThresholds>();
 const raceRankDisplayTimes = new Map<string, string>();
@@ -116,7 +125,7 @@ const classifyVdot = (vdot: number, gender: Gender): string => {
   return "Below Beginner";
 };
 
-const distanceLabels: Record<string, string> = {
+const distanceLabels: Record<Distance, string> = {
   "5k": "5K",
   "10k": "10K",
   "half-marathon": "Half Marathon",
@@ -138,10 +147,10 @@ const benchmarkDistanceOrder: Distance[] = [
   "marathon",
 ];
 
-const pad = (value: number) =>
+const pad = (value: number): string =>
   String(Math.floor(Math.abs(value))).padStart(2, "0");
 
-const formatTime = (totalSeconds: number) => {
+const formatTime = (totalSeconds: number): string => {
   if (!Number.isFinite(totalSeconds) || totalSeconds < 0) {
     return "00:00:00";
   }
@@ -154,7 +163,7 @@ const formatTime = (totalSeconds: number) => {
   return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
 };
 
-const formatPace = (totalSeconds: number) => {
+const formatPace = (totalSeconds: number): string => {
   if (!Number.isFinite(totalSeconds) || totalSeconds < 0) {
     return "0 seconds";
   }
@@ -164,7 +173,7 @@ const formatPace = (totalSeconds: number) => {
   const minutes = Math.floor((roundedSeconds % 3600) / 60);
   const seconds = roundedSeconds % 60;
 
-  const parts = [];
+  const parts: string[] = [];
 
   if (hours > 0) {
     parts.push(`${hours} hours`);
@@ -181,17 +190,17 @@ const formatPace = (totalSeconds: number) => {
   return parts.join(" ");
 };
 
-const readNumber = (input: HTMLInputElement) => {
+const readNumber = (input: HTMLInputElement): number => {
   const value = input.valueAsNumber;
   return Number.isFinite(value) ? value : 0;
 };
 
-const readDurationPart = (input: HTMLInputElement) => {
+const readDurationPart = (input: HTMLInputElement): number => {
   const value = readNumber(input);
   return Math.min(59, Math.max(0, value));
 };
 
-const parseClockTimeToSeconds = (value: string) => {
+const parseClockTimeToSeconds = (value: string): number | null => {
   const parts = value.split(":").map((part) => Number.parseInt(part, 10));
 
   if (parts.some((part) => Number.isNaN(part))) {
@@ -211,23 +220,26 @@ const parseClockTimeToSeconds = (value: string) => {
   return null;
 };
 
-const buildRaceRankKey = (distance: string, ageGroup: string, gender: string) =>
-  `${distance}|${ageGroup}|${gender}`;
+const buildRaceRankKey = (
+  distance: string,
+  ageGroup: string,
+  gender: string,
+): string => `${distance}|${ageGroup}|${gender}`;
 
 const buildRaceRankDisplayKey = (
   distance: string,
   ageGroup: string,
   gender: string,
   rank: RankLevel,
-) => `${distance}|${ageGroup}|${gender}|${rank}`;
+): string => `${distance}|${ageGroup}|${gender}|${rank}`;
 
-const formatRankLabel = (rank: RankLevel) =>
+const formatRankLabel = (rank: RankLevel): string =>
   rank.slice(0, 1).toUpperCase() + rank.slice(1);
 
 const getRankDistanceKey = (
   presetValue: string,
   usingCustomDistance: boolean,
-) => {
+): Distance | null => {
   if (usingCustomDistance) {
     return null;
   }
@@ -251,7 +263,10 @@ const getRankDistanceKey = (
   return null;
 };
 
-const classifyRaceRank = (timeSeconds: number, thresholds: RankThresholds) => {
+const classifyRaceRank = (
+  timeSeconds: number,
+  thresholds: RankThresholds,
+): string => {
   if (timeSeconds <= thresholds.elite) {
     return "Elite";
   }
@@ -275,7 +290,7 @@ const classifyRaceRank = (timeSeconds: number, thresholds: RankThresholds) => {
   return "Below Beginner";
 };
 
-const loadRaceRankData = () => {
+const loadRaceRankData = (): void => {
   try {
     const validatedRaceRanks = RaceRanksSchema.parse(raceRanks);
 
@@ -343,7 +358,7 @@ const loadRaceRankData = () => {
   }
 };
 
-const initBenchmarks = () => {
+const initBenchmarks = (): (() => void) => {
   const benchmarkChart = document.getElementById(
     "benchmark-chart",
   )! as HTMLDivElement;
@@ -351,29 +366,13 @@ const initBenchmarks = () => {
     "benchmark-chart-summary",
   )! as HTMLElement;
 
-  const renderChartMessage = (message: string) => {
+  const renderChartMessage = (message: string): void => {
     benchmarkChartSummary.textContent = message;
     benchmarkChart.innerHTML = "";
   };
 
-  const createChartData = (
-    sortedAgeGroups: string[],
-  ): {
-    age: string;
-    distance: string;
-    time: number;
-    rank: string;
-    gender: string;
-    label: string;
-  }[] => {
-    const data: {
-      age: string;
-      distance: string;
-      time: number;
-      rank: string;
-      gender: string;
-      label: string;
-    }[] = [];
+  const createChartData = (sortedAgeGroups: string[]): BenchmarkChartDatum[] => {
+    const data: BenchmarkChartDatum[] = [];
 
     const genders: Gender[] = ["male", "female"];
 
@@ -410,7 +409,7 @@ const initBenchmarks = () => {
     return data;
   };
 
-  const renderBenchmarkChart = (sortedAgeGroups: string[]) => {
+  const renderBenchmarkChart = (sortedAgeGroups: string[]): void => {
     const data = createChartData(sortedAgeGroups);
 
     if (data.length === 0) {
@@ -418,7 +417,7 @@ const initBenchmarks = () => {
       return;
     }
 
-    const spec = {
+    const spec: VisualizationSpec = {
       $schema: "https://vega.github.io/schema/vega-lite/v5.json",
       data: { values: data },
       params: [
@@ -497,7 +496,7 @@ const initBenchmarks = () => {
       height: 350,
     };
 
-    vegaEmbed(benchmarkChart, spec as any, { actions: false })
+    vegaEmbed(benchmarkChart, spec, { actions: false })
       .then(() => {
         benchmarkChartSummary.textContent =
           "Use the native chart controls to filter distance, rank, and gender. Hover points for details; lower times are faster.";
@@ -508,7 +507,7 @@ const initBenchmarks = () => {
       });
   };
 
-  const renderBenchmarks = () => {
+  const renderBenchmarks = (): void => {
     if (raceRankDataFailed) {
       renderChartMessage("Unable to load benchmark data.");
       return;
@@ -539,7 +538,7 @@ const initBenchmarks = () => {
   };
 };
 
-const initCalculator = () => {
+const initCalculator = (): (() => void) => {
   const distancePresetInput = document.getElementById(
     "distance-presets",
   )! as HTMLSelectElement;
@@ -569,7 +568,7 @@ const initCalculator = () => {
   const vdotScoreOutput = document.getElementById("vdot-score")! as HTMLElement;
   const vdotLevelOutput = document.getElementById("vdot-level")! as HTMLElement;
 
-  const updateCalculator = () => {
+  const updateCalculator = (): void => {
     const usingCustomDistance = distancePresetInput.value === "custom";
     customDistanceField.hidden = !usingCustomDistance;
     distanceInput.disabled = !usingCustomDistance;
@@ -664,7 +663,7 @@ const initCalculator = () => {
   return updateCalculator;
 };
 
-const initPage = () => {
+const initPage = (): void => {
   const updateCalculator = initCalculator();
   const refreshBenchmarks = initBenchmarks();
 
