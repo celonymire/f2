@@ -673,10 +673,4 @@ const initPage = (): void => {
   refreshBenchmarks();
 };
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => {
-    void initPage();
-  });
-} else {
-  void initPage();
-}
+void initPage();
