@@ -1,16 +1,15 @@
 import vegaEmbed, { type VisualizationSpec } from "vega-embed";
 import raceRanks from "../data/race-ranks.json";
-import { RaceRanksSchema } from "../data/schemas";
+import {
+  RaceDistanceSchema,
+  RaceRankLevelSchema,
+  RaceRanksSchema,
+  type RaceDistance,
+  type RaceGender,
+  type RaceRankLevel,
+} from "../data/schemas";
 
-type RankThresholds = {
-  beginner: number;
-  novice: number;
-  intermediate: number;
-  advanced: number;
-  elite: number;
-};
-
-type RankLevel = "beginner" | "novice" | "intermediate" | "advanced" | "elite";
+type RankThresholds = Record<RaceRankLevel, number>;
 
 type VdotLevel = {
   label: string;
@@ -19,9 +18,11 @@ type VdotLevel = {
   description: string;
 };
 
-type Gender = "male" | "female";
+type Gender = RaceGender;
 
-type Distance = "5k" | "10k" | "half-marathon" | "marathon";
+type Distance = RaceDistance;
+
+type RankLevel = RaceRankLevel;
 
 type BenchmarkChartDatum = {
   age: string;
@@ -132,20 +133,9 @@ const distanceLabels: Record<Distance, string> = {
   marathon: "Marathon",
 };
 
-const benchmarkRankOrder: RankLevel[] = [
-  "beginner",
-  "novice",
-  "intermediate",
-  "advanced",
-  "elite",
-];
+const benchmarkRankOrder: RankLevel[] = [...RaceRankLevelSchema.options];
 
-const benchmarkDistanceOrder: Distance[] = [
-  "5k",
-  "10k",
-  "half-marathon",
-  "marathon",
-];
+const benchmarkDistanceOrder: Distance[] = [...RaceDistanceSchema.options];
 
 const pad = (value: number): string =>
   String(Math.floor(Math.abs(value))).padStart(2, "0");
@@ -221,15 +211,15 @@ const parseClockTimeToSeconds = (value: string): number | null => {
 };
 
 const buildRaceRankKey = (
-  distance: string,
+  distance: Distance,
   ageGroup: string,
-  gender: string,
+  gender: Gender,
 ): string => `${distance}|${ageGroup}|${gender}`;
 
 const buildRaceRankDisplayKey = (
-  distance: string,
+  distance: Distance,
   ageGroup: string,
-  gender: string,
+  gender: Gender,
   rank: RankLevel,
 ): string => `${distance}|${ageGroup}|${gender}|${rank}`;
 
@@ -371,7 +361,9 @@ const initBenchmarks = (): (() => void) => {
     benchmarkChart.innerHTML = "";
   };
 
-  const createChartData = (sortedAgeGroups: string[]): BenchmarkChartDatum[] => {
+  const createChartData = (
+    sortedAgeGroups: string[],
+  ): BenchmarkChartDatum[] => {
     const data: BenchmarkChartDatum[] = [];
 
     const genders: Gender[] = ["male", "female"];
@@ -637,7 +629,7 @@ const initCalculator = (): (() => void) => {
     const rankLookupKey = buildRaceRankKey(
       rankDistanceKey,
       ageGroupInput.value,
-      genderInput.value,
+      genderInput.value as Gender,
     );
     const thresholds = raceRankThresholds.get(rankLookupKey);
 

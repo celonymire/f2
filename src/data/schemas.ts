@@ -2,20 +2,45 @@ import { z } from "zod";
 
 const rankTimeSchema = z.string().regex(/^\d{1,2}:\d{2}(?::\d{2})?$/);
 
-export const RaceRankRecordSchema = z.object({
-  distance: z.enum(["5k", "10k", "half-marathon", "marathon"]),
-  age_group: z.string().regex(/^\d+$/),
-  gender: z.enum(["male", "female"]),
-  beginner: rankTimeSchema,
-  novice: rankTimeSchema,
-  intermediate: rankTimeSchema,
-  advanced: rankTimeSchema,
-  elite: rankTimeSchema,
-});
+export const RaceDistanceSchema = z.enum([
+  "5k",
+  "10k",
+  "half-marathon",
+  "marathon",
+]);
+
+export const RaceGenderSchema = z.enum(["male", "female"]);
+
+export const RaceRankLevelSchema = z.enum([
+  "beginner",
+  "novice",
+  "intermediate",
+  "advanced",
+  "elite",
+]);
+
+type RaceRankLevelValue = z.infer<typeof RaceRankLevelSchema>;
+
+const raceRankTimeFieldSchemas = Object.fromEntries(
+  RaceRankLevelSchema.options.map((level) => [level, rankTimeSchema]),
+) as Record<RaceRankLevelValue, typeof rankTimeSchema>;
+
+export const RaceRankTimesSchema = z.object(raceRankTimeFieldSchemas);
+
+export const RaceRankRecordSchema = z
+  .object({
+    distance: RaceDistanceSchema,
+    age_group: z.string().regex(/^\d+$/),
+    gender: RaceGenderSchema,
+  })
+  .extend(RaceRankTimesSchema.shape);
 
 export const RaceRanksSchema = z.array(RaceRankRecordSchema);
 
 export type RaceRankRecord = z.infer<typeof RaceRankRecordSchema>;
+export type RaceDistance = z.infer<typeof RaceDistanceSchema>;
+export type RaceGender = z.infer<typeof RaceGenderSchema>;
+export type RaceRankLevel = z.infer<typeof RaceRankLevelSchema>;
 
 export const ProductSchema = z.object({
   id: z.string().min(1),
